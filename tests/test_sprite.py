@@ -22,7 +22,7 @@ class Test_Sprite(unittest.TestCase):
         
         
     def test_sprite_saves_movement(self):
-        self.sprite.start_move(1) # east
+        self.sprite.start_move(1)
         self.assertEqual(self.sprite.to_move, (1, 1))
         
 
@@ -44,17 +44,17 @@ class Test_Sprite(unittest.TestCase):
         self.assertEqual(self.sprite.pos, (1.5, 2))
 
 
-    def test_sprite_wont_move_outside_boundaries(self):
-        self.sprite.start_move(2) # south
+    def test_sprite_doesnt_move_outside_boundaries(self):
+        self.sprite.start_move(2)
         self.assertEqual(self.sprite.to_move[0], 0)
 
 
-    def test_sprite_wont_enter_solid_cell(self):
-        self.sprite.start_move(3) # west
+    def test_sprite_doesnt_enter_solid_cell(self):
+        self.sprite.start_move(3)
         self.assertEqual(self.sprite.to_move[0], 0)
 
 
-    def test_sprite_wont_enter_cells_with_solid_sprites(self):
+    def test_sprite_doesnt_enter_cells_with_solid_sprites(self):
         self.level.add_sprite('Crate', (2, 2))
         self.sprite.start_move(1)
         self.assertEqual(self.sprite.to_move[0], 0)

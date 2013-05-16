@@ -35,4 +35,8 @@ class Test_Player(unittest.TestCase):
         self.assertEqual(self.crate.pos, (2, 1))
         
         
+    def test_player_doesnt_push_movable_without_empty_cell_behind(self):
+        self.level.add_sprite('Crate', (2, 1))
+        self.player.start_move(1)
+        self.assertEqual(self.player.to_move[0], 0)
         
