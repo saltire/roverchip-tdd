@@ -17,7 +17,8 @@ class Player(Sprite):
             if (not movables or
                 (movables and not
                  self.level.solids_at(movables[0]._get_dest_pos(direction)))):
-                self.to_move = 1, direction
+                self.to_move = 1
+                self.move_dir = direction
                 if movables:
                     self.pushing |= set(movables)
                     
@@ -26,9 +27,8 @@ class Player(Sprite):
         """Move the player and also move pushed sprites."""
         distance = Sprite.do_move(self, elapsed)
         
-        remaining, direction = self.to_move
         for spr in self.pushing.copy():
-            spr.pos = spr._get_dest_pos(direction, distance)
-            if remaining == 0:
+            spr.pos = spr._get_dest_pos(self.move_dir, distance)
+            if self.to_move == 0:
                 self.pushing.discard(spr)
         

@@ -21,7 +21,7 @@ class Test_Player(unittest.TestCase):
         
     def test_player_enters_cells_with_movables(self):
         self.player.start_move(1)
-        self.assertEqual(self.player.to_move[0], 1)
+        self.assertEqual(self.player.to_move, 1)
         
         
     def test_player_pushes_movable_objects(self):
@@ -38,5 +38,5 @@ class Test_Player(unittest.TestCase):
     def test_player_doesnt_push_movable_without_empty_cell_behind(self):
         self.level.add_sprite('Crate', (2, 1))
         self.player.start_move(1)
-        self.assertEqual(self.player.to_move[0], 0)
+        self.assertEqual(self.player.to_move, 0)
         

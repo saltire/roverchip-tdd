@@ -6,7 +6,8 @@ class Sprite:
         self.pos = x, y                 # sprite's coords on cell grid
         self.facing = facing            # direction sprite is facing
         self.tile_facing = facing       # direction tile is facing
-        self.to_move = 0, 0             # distance left to move, and direction
+        self.to_move = 0                # distance left to move
+        self.move_dir = 0               # direction sprite is moving
         
         # defaults to override
         self.tile = 0, 0                # coords of sprite's tile in tileset
@@ -34,15 +35,15 @@ class Sprite:
     def start_move(self, direction):
         """Start the sprite moving one cell in the given direction."""
         if self.level.sprite_can_enter(self._get_dest_pos(direction)):
-            self.to_move = 1, direction
+            self.to_move = 1
+            self.move_dir = direction
         
         
     def do_move(self, elapsed):
         """Move the sprite based on how much time has elapsed,
         and return distance moved."""
-        remaining, direction = self.to_move
-        if remaining:
-            distance = min(self.speed * (elapsed / 1000.0), remaining)
-            self.to_move = remaining - distance, direction
-            self.pos = self._get_dest_pos(direction, distance)
+        if self.to_move:
+            distance = min(self.speed * (elapsed / 1000.0), self.to_move)
+            self.to_move -= distance
+            self.pos = self._get_dest_pos(self.move_dir, distance)
         return distance

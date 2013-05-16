@@ -13,6 +13,10 @@ class Level:
             self.sprites.append(spritetypes[spritetype](self, (x, y)))
             
             
+    def sprites_by_type(self, stype):
+        return [spr for spr in self.sprites if spr.get_type() == stype]
+            
+            
     def sprites_at(self, (x, y)):
         """Return all sprites at the given position."""
         return [spr for spr in self.sprites if spr.pos == (x, y)]
@@ -31,12 +35,12 @@ class Level:
     def sprites_in(self, (x, y)):
         """Return all sprites overlapping the cell at the given position."""
         return [spr for spr in self.sprites if
-                x - 1 < spr.pos[0] < x + 1 and
-                y - 1 < spr.pos[1] < y + 1]
+                x - spr.size < spr.pos[0] < x + 1 and
+                y - spr.size < spr.pos[1] < y + 1]
     
     
     def movables_in(self, (x, y)):
-        """Return all movables sprites overlapping the cell at the given pos."""
+        """Return all movable sprites overlapping the cell at the given pos."""
         return [spr for spr in self.sprites_in((x, y)) if spr.is_movable]
     
     

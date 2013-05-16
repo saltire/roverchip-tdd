@@ -1,7 +1,7 @@
 import unittest
 
-from roverchip.level import Level
-from roverchip.sprites import spritetypes
+from roverchip.levels.level import Level
+from roverchip.levels.sprites import spritetypes
 
 
 class MockLevel(Level):
@@ -71,6 +71,12 @@ class Test_Level(unittest.TestCase):
         self.assertItemsEqual(self.level.sprites_in((2, 1)), [])
         self.assertItemsEqual(self.level.sprites_in((2, 2)), [crate])
         self.assertItemsEqual(self.level.sprites_in((3, 2)), [crate])
+        
+        
+    def test_level_returns_sprites_by_type(self):
+        self.assertItemsEqual(self.level.sprites_by_type('Player'), [self.player])
+        self.assertItemsEqual(self.level.sprites_by_type('Crate'), [self.crate])
+        self.assertItemsEqual(self.level.sprites_by_type('Random'), [])
         
     
     def test_sprites_cant_enter_cells_out_of_bounds(self):
