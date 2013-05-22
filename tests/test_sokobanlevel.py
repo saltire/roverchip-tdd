@@ -2,11 +2,7 @@ import unittest
 
 from roverchip.levels.sokobanlevel import SokobanLevel
 
-from test_level import MockLevel, MockDataFile
-
-
-class MockSokobanLevel(SokobanLevel, MockLevel):
-    pass
+from test_level import MockDataFile
 
 
 class Test_SokobanLevel(unittest.TestCase):
@@ -16,7 +12,7 @@ class Test_SokobanLevel(unittest.TestCase):
                  [0, 1, 1]]
         ctypes = [('Floor',), ('Grate',)]
         
-        self.level = MockSokobanLevel(*MockDataFile(cells, ctypes).get_data())
+        self.level = SokobanLevel(*MockDataFile(cells, ctypes).get_data())
         self.player = self.level.add_sprite('Player', (1, 0))
         self.level.add_sprite('Crate', (2, 2))
         

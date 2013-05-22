@@ -1,11 +1,12 @@
 import unittest
 
 from roverchip.game import Game
+from roverchip.levels.level import Level
 
-from test_level import MockLevel, MockDataFile
+from test_level import MockDataFile
 
 
-class MockLevelWithConditions(MockLevel):
+class MockLevelWithConditions(Level):
     def check_for_success(self):
         return self.sprites_by_type('Player')[0].pos == (2, 1)
     

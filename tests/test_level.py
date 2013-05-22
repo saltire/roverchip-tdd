@@ -2,7 +2,6 @@ import unittest
 
 from roverchip.leveldata.leveldata import LevelData
 from roverchip.levels.level import Level
-from roverchip.levels.sprites import spritetypes
 
 
 class MockDataFile(LevelData):
@@ -21,14 +20,6 @@ class MockDataFile(LevelData):
 
 
 
-class MockLevel(Level):
-    def add_sprite(self, spritetype, (x, y)):
-        spr = spritetypes[spritetype](self, (x, y))
-        self.sprites.append(spr)
-        return spr
-    
-    
-
 class Test_Level(unittest.TestCase):
     def setUp(self):
         cells = [[1, 1, 1, 1],
@@ -38,7 +29,7 @@ class Test_Level(unittest.TestCase):
         ctypes = [('Floor',),
                   ('Grate',)
                   ]
-        self.level = MockLevel(*MockDataFile(cells, ctypes).get_data())
+        self.level = Level(*MockDataFile(cells, ctypes).get_data())
         
         self.player = self.level.add_sprite('Player', (1, 2))
         self.crate = self.level.add_sprite('Crate', (1, 1))

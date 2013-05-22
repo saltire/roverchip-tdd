@@ -10,7 +10,14 @@ class Level:
 
         self.sprites = []
         for spritetype, (x, y) in spritedata:
-            self.sprites.append(spritetypes[spritetype](self, (x, y)))
+            self.add_sprite(spritetype, (x, y))
+            
+            
+    def add_sprite(self, spritetype, (x, y)):
+        """Given a sprite type and position, add the sprite."""
+        spr = spritetypes[spritetype](self, (x, y))
+        self.sprites.append(spr)
+        return spr
             
             
     def handle_event(self, etype, args):

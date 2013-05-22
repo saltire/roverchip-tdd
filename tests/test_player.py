@@ -1,6 +1,8 @@
 import unittest
 
-from test_level import MockLevel, MockDataFile
+from roverchip.levels.level import Level
+
+from test_level import MockDataFile
 
 
 class Test_Player(unittest.TestCase):
@@ -11,7 +13,7 @@ class Test_Player(unittest.TestCase):
         ctypes = [('Floor',),
                   ('Wall',)]
         
-        self.level = MockLevel(*MockDataFile(cells, ctypes).get_data())
+        self.level = Level(*MockDataFile(cells, ctypes).get_data())
         
         self.player = self.level.add_sprite('Player', (0, 1))
         self.crate = self.level.add_sprite('Crate', (1, 1))
