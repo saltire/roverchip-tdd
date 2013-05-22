@@ -13,7 +13,25 @@ class Level:
             self.sprites.append(spritetypes[spritetype](self, (x, y)))
             
             
+    def handle_event(self, etype, args):
+        """Given some events, take the necessary actions."""
+        if etype == 'move':
+            player = self.sprites_by_type('Player')[0]
+            player.start_move(args[0])
+            
+            
+    def check_for_success(self):
+        """Return true if the level has been completed."""
+        pass
+
+
+    def check_for_failure(self):
+        """Return true if the level has been failed."""
+        pass
+    
+    
     def sprites_by_type(self, stype):
+        """Return all sprites whose type matche the given string."""
         return [spr for spr in self.sprites if spr.get_type() == stype]
             
             

@@ -1,6 +1,6 @@
 import unittest
 
-from test_level import MockLevel
+from test_level import MockLevel, MockDataFile
 
 
 class Test_Sprite(unittest.TestCase):
@@ -10,7 +10,7 @@ class Test_Sprite(unittest.TestCase):
                  [1, 0, 0]]
         ctypes = [('Floor',), ('Wall',)]
         
-        self.level = MockLevel(cells, ctypes)
+        self.level = MockLevel(*MockDataFile(cells, ctypes).get_data())
         
         self.sprite = self.level.add_sprite('Sprite', (1, 2))
         

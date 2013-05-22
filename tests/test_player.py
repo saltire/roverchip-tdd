@@ -1,17 +1,17 @@
 import unittest
 
-from test_level import MockLevel
+from test_level import MockLevel, MockDataFile
 
 
 class Test_Player(unittest.TestCase):
     def setUp(self):
-        celldata = [[1, 1, 1],
-                    [0, 0, 0],
-                    [0, 0, 0]]
+        cells = [[1, 1, 1],
+                 [0, 0, 0],
+                 [0, 0, 0]]
         ctypes = [('Floor',),
                   ('Wall',)]
         
-        self.level = MockLevel(celldata, ctypes)
+        self.level = MockLevel(*MockDataFile(cells, ctypes).get_data())
         
         self.player = self.level.add_sprite('Player', (0, 1))
         self.crate = self.level.add_sprite('Crate', (1, 1))
