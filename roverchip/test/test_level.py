@@ -5,18 +5,19 @@ from roverchip.levels.level import Level
 
 
 class MockDataFile(LevelData):
-    def __init__(self, cells, ctypes):
-        self.cells = cells
-        self.ctypes = ctypes
+    def __init__(self, cells, ctypes, sprites=[], leveltype='Level'):
+        self.leveltype = leveltype
+
+        self.celldata = {}
+        for y, row in enumerate(cells):
+            for x, cell in enumerate(row):
+                self.celldata[x, y] = ctypes[cell][0]
+
+        self.spritedata = sprites
         
         
     def get_data(self):
-        celldata = {}
-        for y, row in enumerate(self.cells):
-            for x, cell in enumerate(row):
-                celldata[x, y] = self.ctypes[cell][0]
-                
-        return celldata, []
+        return self.celldata, self.spritedata
 
 
 

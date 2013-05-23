@@ -42,6 +42,7 @@ class Sprite:
     def do_move(self, elapsed):
         """Move the sprite based on how much time has elapsed,
         and return distance moved."""
+        distance = 0
         if self.to_move:
             distance = min(self.speed * (elapsed / 1000.0), self.to_move)
             self.to_move -= distance

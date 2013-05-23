@@ -8,6 +8,9 @@ class Level:
         for (x, y), celltype in celldata.items():
             self.cells[x, y] = celltypes[celltype]()
 
+        self.width = len(set(x for x, _ in self.cells))
+        self.height = len(set(y for _, y in self.cells))
+        
         self.sprites = []
         for spritetype, (x, y) in spritedata:
             self.add_sprite(spritetype, (x, y))
@@ -25,6 +28,12 @@ class Level:
         if etype == 'move':
             player = self.sprites_by_type('Player')[0]
             player.start_move(args[0])
+            
+            
+    def update_level(self, elapsed):
+        """Move sprites and take any resulting actions."""
+        for spr in self.sprites:
+            spr.do_move(elapsed)
             
             
     def check_for_success(self):
