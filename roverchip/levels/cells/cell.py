@@ -2,7 +2,6 @@ class Cell:
     def __init__(self):
         
         # defaults to override
-        self.tile = 0, 0                # tile coords in the tileset
         self.rotate = 0                 # rotation of the tile
         self.sprite_can_enter = True    # sprites can enter this cell
         self.robot_can_enter = True     # robots can enter this cell

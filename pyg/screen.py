@@ -3,7 +3,7 @@ class Screen:
         """Store the window's view, from which to create subsurfaces. Then
         call the resize view hook."""
         self.window_view = view
-        self.resize_view(view.get_size())
+        self.resize_view()
         
         
     def resize_view(self, size):

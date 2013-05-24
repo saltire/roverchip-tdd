@@ -37,4 +37,4 @@ leadpct         = 0.4
 
 tilepath        = path('pyg/tiles.png')
 tilesize        = 16, 16
-viewcells       = 10, 6
+maxviewcells    = 10, 6

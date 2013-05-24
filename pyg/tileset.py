@@ -9,7 +9,7 @@ class Tileset:
         self.dims = self.img.get_width() / tw, self.img.get_height() / th
         
     
-    def init_tileset(self, cellsize):
+    def resize_tileset(self, cellsize):
         """Resize the tileset to fit the cell size."""
         self.cellsize = cellsize
         

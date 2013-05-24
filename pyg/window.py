@@ -24,6 +24,7 @@ class Window:
                 
         # init view surface and run screen hook
         self.view = pygame.display.set_mode(size, pygame.RESIZABLE)
+        self.view.fill((0, 0, 0))
         for screen in self.screens:
             screen.set_view(self.view)
         
