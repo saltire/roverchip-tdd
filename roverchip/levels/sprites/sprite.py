@@ -39,6 +39,11 @@ class Sprite:
         self.move_dir = direction
         if self.tile_rotates:
             self.rotate = direction
+            
+            
+    def start_turn(self):
+        """This hook is called at the beginning of each frame."""
+        pass
         
         
     def do_move(self, elapsed):

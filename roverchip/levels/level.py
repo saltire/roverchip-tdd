@@ -25,17 +25,22 @@ class Level:
         return spr
             
             
+    def update_level(self, events, elapsed):
+        """Move sprites and take any resulting actions."""
+        for event in events:
+            self.handle_event(*event)
+        
+        for spr in self.sprites:
+            spr.start_turn()
+        for spr in self.sprites:
+            spr.do_move(elapsed)
+            
+            
     def handle_event(self, etype, *args):
         """Given some events, take the necessary actions."""
         if etype == 'move':
             player = self.sprites_by_type('Player')[0]
-            player.attempt_move(args[0])
-            
-            
-    def update_level(self, elapsed):
-        """Move sprites and take any resulting actions."""
-        for spr in self.sprites:
-            spr.do_move(elapsed)
+            player.handle_move_event(*args)
             
             
     def check_for_success(self):

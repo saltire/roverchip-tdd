@@ -11,11 +11,7 @@ class Game:
     def run_frame(self, elapsed, events):
         """Run one frame of the level, and return None unless the level is
         either won or lost, in which case return True or False respectively."""
-        for event in events:
-            etype, args = event[0], event[1:]
-            self.level.handle_event(etype, *args)
-            
-        self.level.update_level(elapsed)
+        self.level.update_level(events, elapsed)
         
         if self.level.check_for_failure():
             return False

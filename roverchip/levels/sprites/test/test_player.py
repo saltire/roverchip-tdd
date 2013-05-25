@@ -10,6 +10,7 @@ class Test_Player(unittest.TestCase):
         cells = [[1, 1, 1],
                  [0, 0, 0],
                  [0, 0, 0],
+                 [0, 0, 0],
                  [0, 0, 0]]
         ctypes = [('Floor',),
                   ('Wall',)]
@@ -44,21 +45,39 @@ class Test_Player(unittest.TestCase):
         self.assertEqual(self.player.to_move, 0)
         
         
+    def test_player_doesnt_push_movable_without_passable_cell_behind(self):
+        self.level.add_sprite('Crate', (0, 0))
+        self.player.attempt_move(0)
+        self.assertEqual(self.player.to_move, 0)
+        
+        
+    def test_player_doesnt_push_without_passable_cell_behind_on_key_event(self):
+        self.level.add_sprite('Crate', (0, 0))
+        self.level.update_level([('move', 0)], self.celltime)
+        self.assertEqual(self.player.pos, (0, 1))
+        
+        
     def test_player_starts_moving_after_move_event(self):
         self.level.handle_event('move', 2)
+        self.player.start_turn()
         self.assertEqual(self.player.to_move, 1)
         
         
     def test_player_moves_after_move_event(self):
-        self.level.handle_event('move', 2)
-        self.player.do_move(self.celltime)
+        self.level.update_level([('move', 2)], self.celltime)
         self.assertEqual(self.player.pos, (0, 2))
         
         
-    def test_player_moves_again_after_second_move_event(self):
-        self.level.handle_event('move', 2)
-        self.player.do_move(self.celltime)
-        self.level.handle_event('move', 2)
-        self.player.do_move(self.celltime)
+    def test_player_keeps_moving_until_key_released(self):
+        self.level.update_level([('move', 2)], self.celltime)
+        self.level.update_level([], self.celltime)
         self.assertEqual(self.player.pos, (0, 3))
+        
+
+    def test_player_stops_moving_when_key_released(self):
+        self.level.update_level([('move', 2)], self.celltime)
+        self.level.update_level([], self.celltime)
+        self.level.update_level([('move', 2, False)], self.celltime)
+        self.assertEqual(self.player.pos, (0, 3))
+        
         

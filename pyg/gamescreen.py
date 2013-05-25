@@ -86,11 +86,12 @@ class GameScreen(Screen):
     
     def run_frame(self, elapsed, keys):
         # handle move events
+        events = []
         for key, keydown in keys:
-            if key in self.move_keys and keydown:
-                self.level.handle_event('move', self.move_keys.index(key))
+            if key in self.move_keys:
+                events.append(('move', self.move_keys.index(key), keydown))
         
-        self.level.update_level(elapsed)
+        self.level.update_level(events, elapsed)
         
         if self.level.check_for_failure():
             return False
