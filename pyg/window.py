@@ -57,16 +57,11 @@ class Window:
                     keys.append((event.key, 0))
 
             # run a frame of this screen
-            nextscreen = screen.run_frame(elapsed, keys)
+            result = screen.run_frame(elapsed, keys)
             
-            if nextscreen is False:
-                # return to the previous screen on the stack
-                self.screens.pop()
-                return
-            
-            elif nextscreen is not None:
-                # add a new screen to the stack
-                self.run(nextscreen)
+            # break loop if screen returns a result
+            if result is not None:
+                return result
 
         
         

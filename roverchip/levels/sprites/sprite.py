@@ -1,11 +1,10 @@
 class Sprite:
-    def __init__(self, level, (x, y), facing=0):
+    def __init__(self, level, (x, y), rotate=0):
         self.level = level
         
         # initial values
         self.pos = x, y                 # sprite's coords on cell grid
-        self.facing = facing            # direction sprite is facing
-        self.tile_facing = facing       # direction tile is facing
+        self.rotate = rotate            # rotation of the tile
         self.to_move = 0                # distance left to move
         self.move_dir = 0               # direction sprite is moving
         
@@ -14,7 +13,7 @@ class Sprite:
         self.layer = 0                  # layer the sprite is rendered on
         self.size = 1                   # size of sprite in cells
         self.speed = 4                  # cells moved per second
-        self.rotate = False             # tile rotates according to self.facing
+        self.tile_rotates = False       # tile rotates according to self.facing
         self.is_movable = False         # can be pushed by player
         self.is_solid = False           # blocks sprites from entering
 
@@ -29,14 +28,17 @@ class Sprite:
         after travelling that distance in that direction."""
         x, y = self.pos
         distance *= -1 if direction in [0, 3] else 1 # negative if N or W
-        return (x + distance, y) if direction % 2 else (x, y + distance)
+        # round to avoid floating-point errors
+        return ((round(x + distance, 5), y) if direction % 2 else
+                (x, round(y + distance, 5)))
 
 
     def start_move(self, direction):
         """Start the sprite moving one cell in the given direction."""
-        if self.level.sprite_can_enter(self._get_dest_pos(direction)):
-            self.to_move = 1
-            self.move_dir = direction
+        self.to_move = 1
+        self.move_dir = direction
+        if self.tile_rotates:
+            self.rotate = direction
         
         
     def do_move(self, elapsed):

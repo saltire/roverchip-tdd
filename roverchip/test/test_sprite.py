@@ -52,19 +52,15 @@ class Test_Sprite(unittest.TestCase):
         self.assertEqual(self.sprite.pos, (1.5, 2))
 
 
-    def test_sprite_doesnt_move_outside_boundaries(self):
-        self.sprite.start_move(2)
-        self.assertEqual(self.sprite.to_move, 0)
-
-
-    def test_sprite_doesnt_enter_solid_cell(self):
-        self.sprite.start_move(3)
-        self.assertEqual(self.sprite.to_move, 0)
-
-
-    def test_sprite_doesnt_enter_cells_with_solid_sprites(self):
-        self.level.add_sprite('Crate', (2, 2))
+    def test_rotating_sprite_rotates_when_moving(self):
+        self.sprite.tile_rotates = True
         self.sprite.start_move(1)
-        self.assertEqual(self.sprite.to_move, 0)
+        self.assertEqual(self.sprite.rotate, 1)
+        
+        
+    def test_non_rotating_sprite_doesnt_rotate_when_moving(self):
+        self.sprite.tile_rotates = False
+        self.sprite.start_move(1)
+        self.assertEqual(self.sprite.rotate, 0)
         
         

@@ -13,7 +13,7 @@ class Game:
         either won or lost, in which case return True or False respectively."""
         for event in events:
             etype, args = event[0], event[1:]
-            self.level.handle_event(etype, args)
+            self.level.handle_event(etype, *args)
             
         self.level.update_level(elapsed)
         

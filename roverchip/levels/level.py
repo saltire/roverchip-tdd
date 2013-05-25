@@ -23,11 +23,11 @@ class Level:
         return spr
             
             
-    def handle_event(self, etype, args):
+    def handle_event(self, etype, *args):
         """Given some events, take the necessary actions."""
         if etype == 'move':
             player = self.sprites_by_type('Player')[0]
-            player.start_move(args[0])
+            player.attempt_move(args[0])
             
             
     def update_level(self, elapsed):

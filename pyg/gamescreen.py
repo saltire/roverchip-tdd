@@ -1,7 +1,7 @@
 import pygame
 
 import config
-from cellrenderer import CellRenderer
+from renderer import Renderer
 from screen import Screen
 from tileset import Tileset
 #from roverchip.game import Game
@@ -15,7 +15,7 @@ class GameScreen(Screen):
         #self.game = Game(self, self, leveldata)
         self.level = leveltypes[leveldata.leveltype](*leveldata.get_data())
         self.tileset = Tileset(config.tilepath, config.tilesize)
-        self.cellrenderer = CellRenderer(self.tileset)
+        self.renderer = Renderer(self.tileset)
         
         self.redraw = True
         
@@ -57,7 +57,7 @@ class GameScreen(Screen):
                 (self.level.width * self.cellsize,
                  self.level.height * self.cellsize))
             for (cx, cy), cell in self.level.cells.items():
-                self.background.blit(self.cellrenderer.render_cell(cell),
+                self.background.blit(self.renderer.render(cell),
                                      (cx * self.cellsize, cy * self.cellsize))
                 
             self.redraw = False
@@ -76,6 +76,12 @@ class GameScreen(Screen):
         left, top = int(ox * self.cellsize), int(oy * self.cellsize)
         width, height = self.view.get_size()
         self.view.blit(self.background, (0, 0), (left, top, width, height))
+        
+        # blit sprites onto the view
+        for sprite in self.level.sprites:
+            sx, sy = sprite.pos
+            self.view.blit(self.renderer.render(sprite),
+                (sx * self.cellsize - left, sy * self.cellsize - top))
     
     
     def run_frame(self, elapsed, keys):
@@ -85,5 +91,10 @@ class GameScreen(Screen):
                 self.level.handle_event('move', self.move_keys.index(key))
         
         self.level.update_level(elapsed)
+        
+        if self.level.check_for_failure():
+            return False
+        if self.level.check_for_success():
+            return True
         
         

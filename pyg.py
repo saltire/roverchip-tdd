@@ -10,5 +10,7 @@ ctypes = [('Floor',), ('Grate',)]
 sprites = [('Player', (1, 1)), ('Crate', (2, 1)), ('Crate', (2, 2))]
 leveldata = MockDataFile(cells, ctypes, sprites, 'SokobanLevel')
 
-Window().run(GameScreen(leveldata))
+result = Window().run(GameScreen(leveldata))
+
+print 'Yay!' if result else 'Ouch!'
 
