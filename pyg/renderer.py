@@ -1,5 +1,6 @@
 class Renderer:
     tiles = {'Floor': (0, 0),
+             'Wall': (1, 0),
              'Grate': (5, 0),
              
              'Player': (0, 2),

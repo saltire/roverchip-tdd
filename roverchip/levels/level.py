@@ -5,20 +5,22 @@ from sprites import spritetypes
 class Level:
     def __init__(self, celldata, spritedata):
         self.cells = {}
-        for (x, y), celltype in celldata.items():
-            self.cells[x, y] = celltypes[celltype]()
+        for (x, y), cell in celldata.items():
+            celltype, args = cell[0], cell[1:]
+            self.cells[x, y] = celltypes[celltype](*args)
 
         self.width = len(set(x for x, _ in self.cells))
         self.height = len(set(y for _, y in self.cells))
         
         self.sprites = []
-        for spritetype, (x, y) in spritedata:
-            self.add_sprite(spritetype, (x, y))
+        for sprite in spritedata:
+            spritetype, (x, y), args = sprite[0], sprite[1], sprite[2:]
+            self.add_sprite(spritetype, (x, y), *args)
             
             
-    def add_sprite(self, spritetype, (x, y)):
+    def add_sprite(self, spritetype, (x, y), *args):
         """Given a sprite type and position, add the sprite."""
-        spr = spritetypes[spritetype](self, (x, y))
+        spr = spritetypes[spritetype](self, (x, y), *args)
         self.sprites.append(spr)
         return spr
             

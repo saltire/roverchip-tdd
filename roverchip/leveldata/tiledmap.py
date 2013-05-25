@@ -35,8 +35,8 @@ class TiledMap(LevelData):
              (9, 4): ('Key', 2),
              (10, 4): ('Key', 3),
              (11, 4): ('Chip',),
-             (0, 5): ('Player', ''),
-             (1, 5): ('Rover', ''),
+             (0, 5): ('Player',),
+             (1, 5): ('Rover',),
              (2, 5): ('Shooter', ''),
              (3, 5): ('Robot', '', 0),
              (4, 5): ('Tank', '', 1),
@@ -48,18 +48,23 @@ class TiledMap(LevelData):
              (3, 6): ('Robot', '', 1),
              (4, 6): ('Tank', '', 2),
              }
-
+    
+    
+    def __init__(self, data):
+        self.xmldata = xml.fromstring(data)
+        self.leveltype = self.xmldata.find("*/property[@name='leveltype']").get('value')
+        
 
     def get_data(self):
         """Parse the data as a Tiled XML level file.
         Get cell data from the first layer and sprite data from the rest."""
-        xmldata = xml.fromstring(self.data)
-        width = int(xmldata.getroot().get('width'))
-        height = int(xmldata.getroot().get('height'))
-        layers = xmldata.findall('layer')
+        width = int(self.xmldata.get('width'))
+        height = int(self.xmldata.get('height'))
+        layers = self.xmldata.findall('layer')
                 
         def get_tile_data(layer, width, height):
-            layerdata = layer.find('data').text.split(',')
+            layerdata = [tile.get('gid')
+                         for tile in layer.find('data').findall('tile')]
             tiledata = {}
             for y in range(height):
                 for x in range(width):
@@ -68,8 +73,9 @@ class TiledMap(LevelData):
                         tilenum = tile % 0x10000000 - 1
                         tiletype = self.tiles[tilenum % 16, tilenum / 16]
                         rotate = (0, 10, 12, 6).index(tile / 0x10000000)
-                        tiledata[x, y] = (tiletype[0], tuple(rotate if i == '' else i
-                                                             for i in tiletype[1:]))
+                        tiledata[x, y] = ([tiletype[0]] +
+                                          [rotate if i == '' else i
+                                           for i in tiletype[1:]])
             return tiledata
         
         # interpret bottom layer as tiles            
@@ -78,8 +84,9 @@ class TiledMap(LevelData):
         # interpret all subsequent layers as sprites
         spritedata = []
         for layer in layers[1:]:
-            spritetiles = get_tile_data(layer, width, height)    
-            spritedata.extend((pos, stype, sdata) for pos, (stype, sdata) in spritetiles.items())
+            spritetiles = get_tile_data(layer, width, height)
+            for (x, y), sdata in spritetiles.items():
+                spritedata.append([sdata[0], (x, y)] + sdata[1:])
             
         return celldata, spritedata
         

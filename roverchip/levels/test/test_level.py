@@ -11,7 +11,7 @@ class MockDataFile(LevelData):
         self.celldata = {}
         for y, row in enumerate(cells):
             for x, cell in enumerate(row):
-                self.celldata[x, y] = ctypes[cell][0]
+                self.celldata[x, y] = ctypes[cell]
 
         self.spritedata = sprites
         
