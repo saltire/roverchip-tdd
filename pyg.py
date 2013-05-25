@@ -1,6 +1,6 @@
 from pyg.window import Window
 from pyg.gamescreen import GameScreen
-from roverchip.test.test_level import MockDataFile
+from roverchip.levels.test.test_level import MockDataFile
 
 
 cells = [[0, 0, 0, 0],

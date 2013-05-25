@@ -3,7 +3,7 @@ import unittest
 from roverchip.game import Game
 from roverchip.levels.level import Level
 
-from test_level import MockDataFile
+from roverchip.levels.test.test_level import MockDataFile
 
 
 class MockLevelWithConditions(Level):
