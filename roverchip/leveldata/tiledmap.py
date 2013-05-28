@@ -1,4 +1,6 @@
+import struct
 import xml.etree.ElementTree as xml
+import zlib
 
 from leveldata import LevelData
 
@@ -52,7 +54,9 @@ class TiledMap(LevelData):
     
     def __init__(self, data):
         self.xmldata = xml.fromstring(data)
-        self.leveltype = self.xmldata.find("*/property[@name='leveltype']").get('value')
+        
+        ltype = self.xmldata.find("*/property[@name='leveltype']").get('value')
+        self.leveltype = ltype.rstrip('Level') + 'Level'
         
 
     def get_data(self):
@@ -62,31 +66,59 @@ class TiledMap(LevelData):
         height = int(self.xmldata.get('height'))
         layers = self.xmldata.findall('layer')
                 
-        def get_tile_data(layer, width, height):
-            layerdata = [tile.get('gid')
-                         for tile in layer.find('data').findall('tile')]
-            tiledata = {}
-            for y in range(height):
-                for x in range(width):
-                    tile = int(layerdata[y * width + x])
-                    if tile:
-                        tilenum = tile % 0x10000000 - 1
-                        tiletype = self.tiles[tilenum % 16, tilenum / 16]
-                        rotate = (0, 10, 12, 6).index(tile / 0x10000000)
-                        tiledata[x, y] = ([tiletype[0]] +
-                                          [rotate if i == '' else i
-                                           for i in tiletype[1:]])
-            return tiledata
-        
         # interpret bottom layer as tiles            
-        celldata = get_tile_data(layers[0], width, height)
+        celldata = self._get_tile_data(layers[0], width, height)
         
         # interpret all subsequent layers as sprites
         spritedata = []
         for layer in layers[1:]:
-            spritetiles = get_tile_data(layer, width, height)
+            spritetiles = self._get_tile_data(layer, width, height)
             for (x, y), sdata in spritetiles.items():
                 spritedata.append([sdata[0], (x, y)] + sdata[1:])
             
         return celldata, spritedata
         
+        
+    def _get_tile_data(self, layer, width, height):
+        """Get tile types and rotation from raw layer data."""
+        layerdata = self._get_layer_data(layer)
+        tiledata = {}
+        for y in range(height):
+            for x in range(width):
+                tile = layerdata[y * width + x]
+                if tile:
+                    tilenum = tile % 0x10000000 - 1
+                    tiletype = self.tiles[tilenum % 16, tilenum / 16]
+                    rotate = (0, 10, 12, 6).index(tile / 0x10000000)
+                    tiledata[x, y] = ([tiletype[0]] +
+                                      [rotate if i == '' else i
+                                       for i in tiletype[1:]])
+        return tiledata
+    
+    
+    def _get_layer_data(self, layer):
+        """Read raw layer data saved by Tiled, in any of several formats."""
+        data = layer.find('data')
+        encoding = data.get('encoding')
+        compression = data.get('compression')
+        
+        if encoding is None:
+            return [int(tile.get('gid')) for tile in data.findall('tile')]
+        
+        elif encoding == 'csv':
+            return [int(i.strip()) for i in data.text.split(',')]
+        
+        elif encoding == 'base64':
+            if compression is None:
+                bdata = data.text.strip().decode('base64')
+            elif compression == 'gzip':
+                bdata = zlib.decompress(data.text.strip().decode('base64'), 16)
+            elif compression == 'zlib':
+                bdata = zlib.decompress(data.text.strip().decode('base64'))
+
+            return [struct.unpack('i', bdata[i:i + 4])[0]
+                    for i in range(0, len(bdata), 4)]
+                
+            
+        
+

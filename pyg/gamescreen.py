@@ -85,9 +85,14 @@ class GameScreen(Screen):
     
     
     def run_frame(self, elapsed, keys):
-        # handle move events
+        # handle events
         events = []
         for key, keydown in keys:
+            # skip level
+            if keydown and key == pygame.K_RETURN:
+                return True
+            
+            # move event
             if key in self.move_keys:
                 events.append(('move', self.move_keys.index(key), keydown))
         

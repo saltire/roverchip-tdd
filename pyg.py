@@ -3,10 +3,14 @@ from pyg.gamescreen import GameScreen
 from roverchip.leveldata.tiledmap import TiledMap
 
 
-with open('levels/soko1.tmx', 'rb') as lfile:
-    leveldata = TiledMap(lfile.read())
+levelfiles = ['levels/soko1.tmx']
+window = Window()
 
-result = Window().run(GameScreen(leveldata))
+for levelfile in levelfiles:
+    with open(levelfile, 'rb') as lfile:
+        leveldata = TiledMap(lfile.read())
+        result = window.run(GameScreen(leveldata))
 
 print 'Yay!' if result else 'Ouch!'
+
 
