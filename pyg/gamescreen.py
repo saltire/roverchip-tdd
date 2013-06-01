@@ -12,8 +12,10 @@ class GameScreen(Screen):
     move_keys = pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_LEFT
     
     def __init__(self, leveldata):
-        #self.game = Game(self, self, leveldata)
-        self.level = leveltypes[leveldata.leveltype](*leveldata.get_data())
+        celldata, spritedata = leveldata.get_data()
+        
+        self.level = leveltypes[leveldata.leveltype](
+                                    celldata, spritedata, config.animation)
         self.tileset = Tileset(config.tilepath, config.tilesize)
         self.renderer = Renderer(self.tileset)
         

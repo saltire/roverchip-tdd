@@ -70,7 +70,7 @@ class Test_Sprite(unittest.TestCase):
         
     def test_non_animated_sprite_moves_full_square_immediately(self):
         self.sprite_noanim.start_move(0)
-        self.sprite_noanim.do_move(self.celltime / 2)
+        self.sprite_noanim.do_move(1)
         self.assertEqual(self.sprite_noanim.pos, (1, 1))
         
 
@@ -87,6 +87,17 @@ class Test_Sprite(unittest.TestCase):
         self.sprite_noanim.do_move(self.celltime / 2)
         self.sprite_noanim.start_move(0)
         self.sprite_noanim.do_move(self.celltime / 2 + 1)
-        self.assertEqual(self.sprite_noanim.pos, (0, 1))
+        self.assertEqual(self.sprite_noanim.pos, (1, 0))
+        
+        
+    def test_non_animated_sprite_moves_again_after_moving_and_waiting(self):
+        self.sprite_noanim.start_move(0)
+        self.sprite_noanim.do_move(1)
+        self.sprite_noanim.do_move(self.celltime - 1)
+        self.sprite_noanim.start_move(0)
+        self.sprite_noanim.do_move(1)
+        self.assertEqual(self.sprite_noanim.pos, (1, 0))
+        
+
         
         

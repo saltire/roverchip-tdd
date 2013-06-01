@@ -25,7 +25,8 @@ class Player(Sprite):
     
     def start_turn(self):
         """Start the player moving if stopped and key is down."""
-        if self.move_key_dir is not None and not self.to_move:
+        if (self.move_key_dir is not None
+            and not self.to_move and not self.move_delay):
             self.attempt_move(self.move_key_dir)
         
     

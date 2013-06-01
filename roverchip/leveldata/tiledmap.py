@@ -112,7 +112,7 @@ class TiledMap(LevelData):
             if compression is None:
                 bdata = data.text.strip().decode('base64')
             elif compression == 'gzip':
-                bdata = zlib.decompress(data.text.strip().decode('base64'), 16)
+                bdata = zlib.decompress(data.text.strip().decode('base64'), 47)
             elif compression == 'zlib':
                 bdata = zlib.decompress(data.text.strip().decode('base64'))
 
