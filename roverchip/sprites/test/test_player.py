@@ -1,8 +1,8 @@
 import unittest
 
-from roverchip.levels.level import Level
+from roverchip.level import Level
 
-from roverchip.levels.test.test_level import MockDataFile
+from roverchip.test.test_level import MockDataFile
 
 
 class Test_Player(unittest.TestCase):

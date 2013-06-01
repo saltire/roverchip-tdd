@@ -1,6 +1,6 @@
 import unittest
 
-from roverchip.levels.sokobanlevel import SokobanLevel
+from roverchip.sokobanlevel import SokobanLevel
 
 from test_level import MockDataFile
 

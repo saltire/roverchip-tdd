@@ -1,7 +1,7 @@
 import unittest
 
 from roverchip.leveldata.leveldata import LevelData
-from roverchip.levels.level import Level
+from roverchip.level import Level
 
 
 class MockDataFile(LevelData):
