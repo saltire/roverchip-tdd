@@ -7,7 +7,7 @@ class Sprite:
         self.rotate = rotate            # rotation of the tile
         self.to_move = 0                # distance left to move
         self.move_dir = 0               # direction sprite is moving
-        self.move_delay = 0             # time before sprite can move again
+        self.delay_left = 0             # time before sprite can move again
         
         # defaults to override
         self.tile = 0, 0                # coords of sprite's tile in tileset
@@ -56,11 +56,11 @@ class Sprite:
             # cells/s * elapsed ms / 1000 = cells travelled
             distance = min(self.speed * elapsed / 1000.0, self.to_move)
         else:
-            if self.to_move and elapsed > self.move_delay:
+            if self.to_move and elapsed > self.delay_left:
                 distance = self.to_move
                 # 1000 ms / cells/s [= ms/cell] * cells = ms delay to add
-                self.move_delay += 1000 / self.speed * distance
-            self.move_delay = max(self.move_delay - elapsed, 0)
+                self.delay_left += 1000 / self.speed * distance
+            self.delay_left = max(self.delay_left - elapsed, 0)
         
         if distance:
             self.to_move -= distance

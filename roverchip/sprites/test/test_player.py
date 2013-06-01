@@ -67,7 +67,7 @@ class Test_Player(unittest.TestCase):
         self.level.update_level([('move', 2)], self.celltime)
         self.assertEqual(self.player.pos, (0, 2))
         
-        
+    
     def test_player_keeps_moving_until_key_released(self):
         self.level.update_level([('move', 2)], self.celltime)
         self.level.update_level([], self.celltime)
@@ -81,3 +81,16 @@ class Test_Player(unittest.TestCase):
         self.assertEqual(self.player.pos, (0, 3))
         
         
+    def test_player_keeps_moving_in_1st_direction_when_2nd_key_pressed(self):
+        self.level.update_level([('move', 2)], self.celltime)
+        self.level.update_level([('move', 1)], self.celltime)
+        self.assertEqual(self.player.pos, (0, 3))
+        
+        
+    def test_player_starts_moving_in_2nd_direction_when_1st_key_released(self):
+        self.level.update_level([('move', 2)], self.celltime)
+        self.level.update_level([('move', 1)], self.celltime)
+        self.level.update_level([('move', 2, False)], self.celltime)
+        self.assertEqual(self.player.pos, (1, 3))
+        
+    

@@ -8,26 +8,25 @@ class Player(Sprite):
         self.tile_rotates = True
         
         self.pushing = set()                # sprites being pushed
-        self.move_key_dir = None            # current move key being pressed
+        self.move_key_queue = []            # current move key being pressed
         
         
     def handle_move_event(self, direction, keydown=True):
         """Set or clear the current direction key, depending on whether
         there is a direction key set already."""
         # move key pressed - set key
-        if keydown and self.move_key_dir is None:
-            self.move_key_dir = direction
+        if keydown and direction not in self.move_key_queue:
+            self.move_key_queue.append(direction)
             
         # move key released - reset key
-        elif not keydown and direction == self.move_key_dir:
-            self.move_key_dir = None
+        elif not keydown and direction in self.move_key_queue:
+            self.move_key_queue.remove(direction)
     
     
     def start_turn(self):
         """Start the player moving if stopped and key is down."""
-        if (self.move_key_dir is not None
-            and not self.to_move and not self.move_delay):
-            self.attempt_move(self.move_key_dir)
+        if (self.move_key_queue and not self.to_move and not self.delay_left):
+            self.attempt_move(self.move_key_queue[0])
         
     
     def attempt_move(self, direction):
