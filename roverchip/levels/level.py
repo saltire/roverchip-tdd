@@ -3,7 +3,7 @@ from sprites import spritetypes
 
 
 class Level:
-    def __init__(self, celldata, spritedata):
+    def __init__(self, celldata, spritedata, animation=True):
         self.cells = {}
         for (x, y), cell in celldata.items():
             celltype, args = cell[0], cell[1:]
@@ -16,6 +16,8 @@ class Level:
         for sprite in spritedata:
             spritetype, (x, y), args = sprite[0], sprite[1], sprite[2:]
             self.add_sprite(spritetype, (x, y), *args)
+            
+        self.animation = animation
             
             
     def add_sprite(self, spritetype, (x, y), *args):

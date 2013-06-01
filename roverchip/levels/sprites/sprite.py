@@ -51,7 +51,10 @@ class Sprite:
         and return distance moved."""
         distance = 0
         if self.to_move:
-            distance = min(self.speed * (elapsed / 1000.0), self.to_move)
+            distance = (min(self.speed * (elapsed / 1000.0), self.to_move)
+                        if self.level.animation else 1)
             self.to_move -= distance
             self.pos = self._get_dest_pos(self.move_dir, distance)
         return distance
+    
+    

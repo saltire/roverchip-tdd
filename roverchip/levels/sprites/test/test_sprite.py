@@ -12,12 +12,16 @@ class Test_Sprite(unittest.TestCase):
                  [1, 0, 0]]
         ctypes = [('Floor',), ('Wall',)]
         
-        self.level = Level(*MockDataFile(cells, ctypes).get_data())
+        celldata, spritedata = MockDataFile(cells, ctypes).get_data()
         
+        self.level = Level(celldata, spritedata)
         self.sprite = self.level.add_sprite('Sprite', (1, 2))
-        
         self.celltime = 1000 / self.sprite.speed # time to move 1 cell
     
+        self.level_noanim = Level(celldata, spritedata, False)
+        self.sprite_noanim = self.level_noanim.add_sprite('Sprite', (1, 2))
+        self.celltime_noanim = 1000 / self.sprite.speed # time to move 1 cell
+        
     
     def test_sprite_has_correct_pos(self):
         self.assertEqual(self.sprite.pos, (1, 2))
@@ -39,7 +43,7 @@ class Test_Sprite(unittest.TestCase):
         self.assertEqual(self.sprite.to_move, 0.5)
         
 
-    def test_sprite_moves_correct_distance(self):
+    def test_sprite_moves_correct_distance_and_direction(self):
         self.sprite.start_move(1)
         self.sprite.do_move(self.celltime / 2)
         self.assertEqual(self.sprite.pos, (1.5, 2))
@@ -62,5 +66,27 @@ class Test_Sprite(unittest.TestCase):
         self.sprite.tile_rotates = False
         self.sprite.start_move(1)
         self.assertEqual(self.sprite.rotate, 0)
+        
+        
+    def test_non_animated_sprite_moves_full_square_immediately(self):
+        self.sprite_noanim.start_move(0)
+        self.sprite_noanim.do_move(self.celltime / 2)
+        self.assertEqual(self.sprite_noanim.pos, (1, 1))
+        
+
+    def test_non_animated_sprite_waits_its_speed_before_moving(self):
+        self.sprite_noanim.start_move(0)
+        self.sprite_noanim.do_move(self.celltime / 2)
+        self.sprite_noanim.start_move(0)
+        self.sprite_noanim.do_move(self.celltime / 2)
+        self.assertEqual(self.sprite_noanim.pos, (1, 1))
+        
+        
+    def test_non_animated_sprite_moves_again_after_waiting(self):
+        self.sprite_noanim.start_move(0)
+        self.sprite_noanim.do_move(self.celltime / 2)
+        self.sprite_noanim.start_move(0)
+        self.sprite_noanim.do_move(self.celltime / 2 + 1)
+        self.assertEqual(self.sprite_noanim.pos, (0, 1))
         
         
