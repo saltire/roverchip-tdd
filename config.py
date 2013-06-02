@@ -1,15 +1,18 @@
 import os
 
 
-path = lambda p: os.path.realpath(os.path.join(os.path.dirname(__file__),
-                                               '..', p))
+path = lambda p: os.path.realpath(os.path.join(os.path.dirname(__file__), p))
 
 
-# window
+# pygame general
+
+keyrepeat       = 100
+
+# pygame window
 
 windowsize      = 800, 400
 minsize         = 200, 120
-keyrepeat       = 100
+animation       = True
 
 # levels
 
@@ -38,4 +41,3 @@ leadpct         = 0.4
 tilepath        = path('pyg/tiles.png')
 tilesize        = 16, 16
 maxviewcells    = 20, 20
-animation       = False
