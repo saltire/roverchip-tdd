@@ -50,14 +50,13 @@ class TiledMap(LevelData):
              (3, 6): ('Robot', '', 1),
              (4, 6): ('Tank', '', 2),
              }
-    
-    
+
     def __init__(self, data):
         self.xmldata = xml.fromstring(data)
-        
+
         ltype = self.xmldata.find("*/property[@name='leveltype']").get('value')
         self.leveltype = ltype.rstrip('Level') + 'Level'
-        
+
 
     def get_data(self):
         """Parse the data as a Tiled XML level file.
@@ -65,20 +64,20 @@ class TiledMap(LevelData):
         width = int(self.xmldata.get('width'))
         height = int(self.xmldata.get('height'))
         layers = self.xmldata.findall('layer')
-                
-        # interpret bottom layer as tiles            
+
+        # interpret bottom layer as tiles
         celldata = self._get_tile_data(layers[0], width, height)
-        
+
         # interpret all subsequent layers as sprites
         spritedata = []
         for layer in layers[1:]:
             spritetiles = self._get_tile_data(layer, width, height)
             for (x, y), sdata in spritetiles.items():
                 spritedata.append([sdata[0], (x, y)] + sdata[1:])
-            
+
         return celldata, spritedata
-        
-        
+
+
     def _get_tile_data(self, layer, width, height):
         """Get tile types and rotation from raw layer data."""
         layerdata = self._get_layer_data(layer)
@@ -94,20 +93,20 @@ class TiledMap(LevelData):
                                       [rotate if i == '' else i
                                        for i in tiletype[1:]])
         return tiledata
-    
-    
+
+
     def _get_layer_data(self, layer):
         """Read raw layer data saved by Tiled, in any of several formats."""
         data = layer.find('data')
         encoding = data.get('encoding')
         compression = data.get('compression')
-        
+
         if encoding is None:
             return [int(tile.get('gid')) for tile in data.findall('tile')]
-        
+
         elif encoding == 'csv':
             return [int(i.strip()) for i in data.text.split(',')]
-        
+
         elif encoding == 'base64':
             if compression is None:
                 bdata = data.text.strip().decode('base64')
@@ -118,7 +117,3 @@ class TiledMap(LevelData):
 
             return [struct.unpack('i', bdata[i:i + 4])[0]
                     for i in range(0, len(bdata), 4)]
-                
-            
-        
-

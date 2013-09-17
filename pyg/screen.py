@@ -4,13 +4,13 @@ class Screen:
         call the resize view hook."""
         self.window_view = view
         self.resize_view()
-        
-        
+
+
     def resize_view(self, size):
         """A hook that runs whenever the view is resized."""
         pass
 
-    
+
     def draw_frame(self):
         """Render any visible changes to the frame."""
         pass

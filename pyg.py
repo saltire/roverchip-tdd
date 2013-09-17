@@ -12,5 +12,3 @@ for levelfile in levelfiles:
         result = window.run(GameScreen(leveldata))
 
 print 'Yay!' if result else 'Ouch!'
-
-

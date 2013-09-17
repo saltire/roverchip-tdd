@@ -7,4 +7,3 @@ class SokobanLevel(Level):
         return all((crate.pos in self.cells
                     and self.cells[crate.pos].get_type() == 'Grate')
                    for crate in self.sprites_by_type('Crate'))
-    
