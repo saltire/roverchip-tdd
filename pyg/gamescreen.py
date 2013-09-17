@@ -20,19 +20,17 @@ class GameScreen(Screen):
         self.redraw = True
 
 
-    def resize_view(self):
+    def resize_view(self, (ww, wh)):
         """Given the window size, set view size and cell size,
         then resize the view and tileset."""
-        windowsize = self.window_view.get_size()
         vw, vh = config.maxviewcells
 
         # set view size in cells and cell size in pixels
         self.viewcells = min(vw, self.level.width), min(vh, self.level.height)
-        self.cellsize = self._get_cell_size(windowsize, self.viewcells)
+        self.cellsize = self._get_cell_size((ww, wh), self.viewcells)
 
         # resize view and tileset, and schedule a full redraw
-        self.view = self.window_view.subsurface(
-                        self._get_view_rect(windowsize, self.viewcells))
+        self.view = self.window_view.subsurface(self._get_view_rect((ww, wh), self.viewcells))
         self.tileset.resize_tileset(self.cellsize)
         self.redraw = True
 
