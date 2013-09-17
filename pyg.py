@@ -1,16 +1,16 @@
+import glob
+
+import config
 from pyg.window import Window
-#from pyg.gamescreen import GameScreen
-from pyg.menuscreen import MainMenu
+from pyg.menuscreen import MainMenuScreen
 from roverchip.leveldata.tiledmap import TiledMap
 
 
-levelfiles = ['levels/soko1.tmx']
 window = Window()
 
-for levelfile in levelfiles:
+leveldata = []
+for levelfile in glob.glob(config.levelpath):
     with open(levelfile, 'rb') as lfile:
-        leveldata = [TiledMap(lfile.read())]
-        result = window.run(MainMenu(leveldata))
-        #result = window.run(GameScreen(leveldata))
+        leveldata.append(TiledMap(lfile.read()))
 
-print 'Yay!' if result else 'Ouch!'
+result = window.run(MainMenuScreen(leveldata))

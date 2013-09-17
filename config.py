@@ -22,6 +22,8 @@ levelpath = path('levels/*.tmx')
 
 menubackcolor = 255, 255, 255
 menufontcolor = 0, 0, 0
+menumarkercolor = 255, 0, 0
+
 menuratio = 3, 2
 menumargin = 0.05, 0.05
 textmargin = 0.05, 0.1

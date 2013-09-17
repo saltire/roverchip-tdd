@@ -57,6 +57,8 @@ class TiledMap(LevelData):
         ltype = self.xmldata.find("*/property[@name='leveltype']").get('value')
         self.leveltype = ltype.rstrip('Level') + 'Level'
 
+        self.title = self.xmldata.find("*/property[@name='title']").get('value')
+
 
     def get_data(self):
         """Parse the data as a Tiled XML level file.

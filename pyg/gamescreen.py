@@ -12,17 +12,17 @@ class GameScreen(Screen):
 
     def __init__(self, leveldata):
         celldata, spritedata = leveldata.get_data()
-        self.level = leveltypes[leveldata.leveltype](
-                                    celldata, spritedata, config.animation)
+        self.level = leveltypes[leveldata.leveltype](celldata, spritedata, config.animation)
         self.tileset = Tileset(config.tilepath, config.tilesize)
         self.renderer = Renderer(self.tileset)
 
         self.redraw = True
 
 
-    def resize_view(self, (ww, wh)):
+    def resize_view(self):
         """Given the window size, set view size and cell size,
         then resize the view and tileset."""
+        ww, wh = self.window.view.get_size()
         vw, vh = config.maxviewcells
 
         # set view size in cells and cell size in pixels
@@ -30,7 +30,7 @@ class GameScreen(Screen):
         self.cellsize = self._get_cell_size((ww, wh), self.viewcells)
 
         # resize view and tileset, and schedule a full redraw
-        self.view = self.window_view.subsurface(self._get_view_rect((ww, wh), self.viewcells))
+        self.view = self.window.view.subsurface(self._get_view_rect((ww, wh), self.viewcells))
         self.tileset.resize_tileset(self.cellsize)
         self.redraw = True
 
@@ -51,6 +51,7 @@ class GameScreen(Screen):
     def draw_frame(self):
         if self.redraw:
             # draw the background
+            self.window.view.fill((0, 0, 0))
             self.background = pygame.Surface(
                 (self.level.width * self.cellsize,
                  self.level.height * self.cellsize))
@@ -89,6 +90,10 @@ class GameScreen(Screen):
             # skip level
             if keydown and key == pygame.K_RETURN:
                 return True
+
+            # exit
+            if keydown and key == pygame.K_ESCAPE:
+                return False
 
             # move event
             if key in self.move_keys:

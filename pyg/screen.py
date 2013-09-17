@@ -1,12 +1,12 @@
 class Screen:
-    def set_view(self, view):
-        """Store the window's view, from which to create subsurfaces. Then
-        call the resize view hook."""
-        self.window_view = view
-        self.resize_view(view.get_size())
+    def set_window(self, window):
+        """Store the window object, from whose view to create subsurfaces.
+        Then call the resize view hook."""
+        self.window = window
+        self.resize_view()
 
 
-    def resize_view(self, (ww, wh)):
+    def resize_view(self):
         """A hook that runs whenever the view is resized."""
         pass
 

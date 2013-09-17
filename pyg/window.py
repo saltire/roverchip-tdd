@@ -10,6 +10,7 @@ class Window:
         # init config
         self.clock = pygame.time.Clock()
 
+        self.screens = []
         self.init_window(size)
 
 
@@ -25,12 +26,13 @@ class Window:
         self.view = pygame.display.set_mode(size, pygame.RESIZABLE)
         self.view.fill((0, 0, 0))
         if screen is not None:
-            screen.set_view(self.view)
+            screen.resize_view()
 
 
     def run(self, screen):
         """Run the loop for this screen."""
-        screen.set_view(self.view)
+        self.screens.append(screen)
+        screen.set_window(self)
 
         result = None
 
@@ -41,6 +43,8 @@ class Window:
 
             # break loop if screen returns a result
             if result is not None:
+                # return to the previous screen (or exit)
+                self.screens.pop()
                 return result
 
             # tick clock
