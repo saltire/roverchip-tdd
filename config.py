@@ -34,9 +34,9 @@ menufontsize = 8, 8
 maxrows = 8
 maxfontsize = 96
 minfontsize = 8
+lineheight = 1.4
 sizestep = 8
 columns = 2
-leadpct = 0.4
 
 # game
 

@@ -28,24 +28,26 @@ class Font:
                 self.chars[char] = charimg
 
 
-    def render(self, text, charheight=None, tracking=0, leading=0, color=None):
+    def render(self, text, charheight=None, lineheight=None, tracking=0, color=None):
         """Return a surface containing a graphical rendering of the text.
-        If lineheight is passed, scale the characters (including leading) to that height.
+        If charheight is passed, scale the characters to that height.
+        Lineheight affects the vertical spacing of multiline strings.
+        Tracking is relative to base font size before scaling.
         Color will replace all colours, keeping alpha unchanged.
         Takes a string or a list of strings (formatting the characters once)."""
         chars = self._format_chars(text if isinstance(text, basestring) else ''.join(text),
-                                   charheight, color)
+                                   charheight, tracking, color)
 
         if isinstance(text, basestring):
             # render a string
-            return self._render_text(text, chars, charheight, tracking, leading)
+            return self._render_text(text, chars, charheight, lineheight)
 
         else:
             # format all characters at once and render multiple strings
-            return [self._render_text(t, chars, charheight, tracking, leading) for t in text]
+            return [self._render_text(t, chars, charheight, lineheight) for t in text]
 
 
-    def _format_chars(self, text, charheight, color):
+    def _format_chars(self, text, charheight, tracking, color):
         """Return the glyphs for each unique character in a string."""
         chars = {char: self.chars[char] for char in set(text.replace('\n', ''))}
 
@@ -56,6 +58,12 @@ class Font:
                 pix[:, :, 0], pix[:, :, 1], pix[:, :, 2] = color
                 del(pix)
 
+            if tracking > 0:
+                # replace the character surface with a larger one
+                chars[char] = pygame.Surface((charimg.get_width() + tracking, charimg.get_height()),
+                                             pygame.SRCALPHA)
+                chars[char].blit(charimg, (0, 0))
+
             if charheight is not None:
                 # scale character to the given height
                 charwidth = int(chars[char].get_width() * float(charheight) / self.height)
@@ -64,12 +72,12 @@ class Font:
         return chars
 
 
-    def _render_text(self, text, chars, charheight, tracking, leading):
+    def _render_text(self, text, chars, charheight, lineheight):
         """Render a block of text using the given glyphs."""
         text = text.split('\n')
-        width = max(sum(chars[char].get_width() + tracking for char in line) - tracking
-                    for line in text)
-        lineheight = (charheight if charheight is not None else self.height) + leading
+        width = max(sum(chars[char].get_width() for char in line) for line in text)
+        lineheight = (lineheight if lineheight is not None else
+                      charheight if charheight is not None else self.height)
         height = len(text) * lineheight
         canvas = pygame.Surface((width, height), pygame.SRCALPHA)
 
@@ -77,7 +85,7 @@ class Font:
             x = 0
             for char in line:
                 canvas.blit(chars[char], (x, y * lineheight))
-                x += chars[char].get_width() + tracking
+                x += chars[char].get_width()
 
         return canvas
 

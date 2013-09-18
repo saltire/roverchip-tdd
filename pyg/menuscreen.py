@@ -34,25 +34,24 @@ class MenuScreen(Screen):
         self.textarea = self.menuview.subsurface((tleft, ttop, twidth, theight))
 
         # find biggest font size that will fit the max number of rows
-        # with the given leading, without going under the min size
+        # with the given rheight, without going under the min size
         for size in range(config.maxfontsize, config.minfontsize - 1, -config.sizestep):
-            rowtotal = size * config.maxrows
-            leadtotal = int(size * config.leadpct) * (config.maxrows - 1)
-            if rowtotal + leadtotal <= self.textarea.get_height():
+            totalheight = int(size * config.lineheight) * (config.maxrows - 1) + size
+            if totalheight <= self.textarea.get_height():
                 rows = config.maxrows
                 break
-            # if no size in range fits, start reducing number of rows
+            # only if no size in range fits: start reducing number of rows
             if size == config.minfontsize:
                 for rows in range(config.maxrows - 1, 0, -1):
-                    rowtotal = size * rows
-                    if rowtotal + leadtotal <= self.textarea.get_height():
+                    totalheight = int(size * config.lineheight) * (rows - 1) + size
+                    if totalheight <= self.textarea.get_height():
                         break
-        self.fsize = size
+        self.cheight = size
         self.rows = rows
-        self.leading = int(size * config.leadpct)
+        self.rheight = int(size * config.lineheight)
 
         # draw marker
-        msize = self.fsize / 2
+        msize = self.cheight / 2
         self.marker = pygame.Surface((msize, msize))
         self.marker.fill(config.menumarkercolor)
 
@@ -73,21 +72,18 @@ class MenuScreen(Screen):
             # adjust offset to within (columns) of col
             self.col_offset = min(scol, max(self.col_offset, scol - columns + 1))
 
-            # render and blit each line of text in each column that is showing
-            options = self.options[self.rows * self.col_offset:
-                                   self.rows * (self.col_offset + columns)]
-            optfonts = self.font.render([option[0] for option in options],
-                                        self.fsize, color=config.menufontcolor)
-
-            for i, optfont in enumerate(optfonts):
-                pos = (i / self.rows * colwidth + self.fsize,
-                       i % self.rows * (self.fsize + self.leading))
-                self.textarea.blit(optfont, pos)
+            # render and blit each column of options that is showing
+            for c, col in enumerate(range(self.col_offset, columns)):
+                opts = self.options[self.rows * col:self.rows * (col + 1)]
+                opttext = self.font.render('\n'.join(opt[0] for opt in opts),
+                                           charheight=self.cheight, lineheight=self.rheight,
+                                           tracking=1, color=config.menufontcolor)
+                self.textarea.blit(opttext, (c * colwidth + self.cheight, 0))
 
             # blit marker
-            mmargin = self.fsize / 4
+            mmargin = self.cheight / 4
             self.textarea.blit(self.marker, ((scol - self.col_offset) * colwidth + mmargin,
-                                             srow * (self.fsize + self.leading) + mmargin))
+                                             srow * self.rheight + mmargin))
 
             self.redraw = False
 

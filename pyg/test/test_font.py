@@ -20,7 +20,7 @@ class Test_Font(unittest.TestCase):
 
 
     def test_tracking_increases_width(self):
-        self.assertEqual(self.font.render('AIa', tracking=2).get_width(), 17)  # 5+3+5 + 2*2
+        self.assertEqual(self.font.render('AIa', tracking=2).get_width(), 19)  # 5+3+5 + 2*3
 
 
     def test_multiple_lines_of_text_are_width_of_longest_line(self):
@@ -28,19 +28,23 @@ class Test_Font(unittest.TestCase):
 
 
     def test_multiple_lines_of_text_are_correct_height(self):
-        self.assertEqual(self.font.render('AIa\nAIaa\nA').get_height(), 24)  # 8*3
+        self.assertEqual(self.font.render('A\nA\nA').get_height(), 24)  # 8*3
 
 
-    def test_leading_increases_height(self):
-        self.assertEqual(self.font.render('AIa\nAIaa\nA', leading=2).get_height(), 30)  # (8+2)*3
+    def test_lineheight_increases_height(self):
+        self.assertEqual(self.font.render('A\nA\nA', lineheight=10).get_height(), 30)  # 10*3
 
 
-    def test_char_height_scales_text(self):
-        self.assertEqual(self.font.render('AIa\nAIaa\nA', charheight=13).get_height(), 39)  # 13*3
+    def test_charheight_scales_height(self):
+        self.assertEqual(self.font.render('A\nA\nA', charheight=13).get_height(), 39)  # 13*3
 
 
-    def test_char_height_scales_width(self):
-        self.assertEqual(self.font.render('A', charheight=16).get_width(), 10)  # 5*(16/8)
+    def test_charheight_scales_width(self):
+        self.assertEqual(self.font.render('AIa', charheight=16).get_width(), 26)  # 5+3+5*(16/8)
+
+
+    def test_charheight_scales_tracking(self):
+        self.assertEqual(self.font.render('AIa', charheight=16, tracking=1).get_width(), 32)
 
 
     def test_passing_a_list_returns_a_list(self):
