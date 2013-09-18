@@ -1,6 +1,10 @@
 import struct
-import xml.etree.ElementTree as xml
 import zlib
+
+try:
+    from lxml import etree
+except ImportError:
+    import xml.etree.ElementTree as etree
 
 from leveldata import LevelData
 
@@ -52,7 +56,7 @@ class TiledMap(LevelData):
              }
 
     def __init__(self, data):
-        self.xmldata = xml.fromstring(data)
+        self.xmldata = etree.fromstring(data)
 
         ltype = self.xmldata.find("*/property[@name='leveltype']").get('value')
         self.leveltype = ltype.rstrip('Level') + 'Level'
@@ -91,9 +95,8 @@ class TiledMap(LevelData):
                     tilenum = tile % 0x10000000 - 1
                     tiletype = self.tiles[tilenum % 16, tilenum / 16]
                     rotate = (0, 10, 12, 6).index(tile / 0x10000000)
-                    tiledata[x, y] = ([tiletype[0]] +
-                                      [rotate if i == '' else i
-                                       for i in tiletype[1:]])
+                    # replace empty string in tile properties with rotation value
+                    tiledata[x, y] = [(rotate if prop == '' else prop) for prop in tiletype]
         return tiledata
 
 
@@ -117,5 +120,5 @@ class TiledMap(LevelData):
             elif compression == 'zlib':
                 bdata = zlib.decompress(data.text.strip().decode('base64'))
 
-            return [struct.unpack('i', bdata[i:i + 4])[0]
+            return [struct.unpack('I', bdata[i:i + 4])[0]
                     for i in range(0, len(bdata), 4)]

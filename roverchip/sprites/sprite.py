@@ -3,20 +3,19 @@ class Sprite:
         self.level = level
 
         # initial values
-        self.pos = x, y                 # sprite's coords on cell grid
-        self.rotate = rotate            # rotation of the tile
-        self.to_move = 0                # distance left to move
-        self.move_dir = 0               # direction sprite is moving
-        self.delay_left = 0             # time before sprite can move again
+        self.pos = x, y  # sprite's coords on cell grid
+        self.rotate = rotate  # rotation of the tile
+        self.to_move = 0  # distance left to move
+        self.move_dir = 0  # direction sprite is moving
+        self.delay_left = 0  # time before sprite can move again
 
         # defaults to override
-        self.tile = 0, 0                # coords of sprite's tile in tileset
-        self.layer = 0                  # layer the sprite is rendered on
-        self.size = 1                   # size of sprite in cells
-        self.speed = 4                  # cells moved per second
-        self.tile_rotates = False       # tile rotates according to self.facing
-        self.is_movable = False         # can be pushed by player
-        self.is_solid = False           # blocks sprites from entering
+        self.layer = 0  # layer the sprite is rendered on
+        self.size = 1  # size of sprite in cells
+        self.speed = 4  # cells moved per second
+        self.tile_rotates = False  # tile rotates according to self.facing
+        self.is_movable = False  # can be pushed by player
+        self.is_solid = False  # blocks sprites from entering
 
 
     def get_type(self):
@@ -28,7 +27,7 @@ class Sprite:
         """Given a direction and an optional distance, give the position
         after travelling that distance in that direction."""
         x, y = self.pos
-        distance *= -1 if direction in [0, 3] else 1 # negative if N or W
+        distance *= -1 if direction in [0, 3] else 1  # negative if N or W
         # round to avoid floating-point errors
         return ((round(x + distance, 5), y) if direction % 2 else
                 (x, round(y + distance, 5)))

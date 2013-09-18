@@ -94,16 +94,24 @@ class Level:
 
 
     def sprite_can_enter(self, (x, y)):
-        """Return true if cell exists and doesn't contain solid sprites."""
+        """Return true if cell exists, doesn't contain solid sprites,
+        and doesn't specify no sprites."""
         return ((x, y) in self.cells
                 and self.cells[x, y].sprite_can_enter
                 and not self.solids_at((x, y))
                 )
 
 
+    def robot_can_enter(self, (x, y)):
+        """Return true if sprites can enter the cell,
+        and it doesn't specify no robots."""
+        return (self.sprite_can_enter((x, y))
+                and self.cells[x, y].robot_can_enter
+                )
+
+
     def player_can_enter(self, (x, y)):
-        """Return true if cell exists and doesn't contain solid immovable
-        sprites."""
+        """Return true if cell exists and doesn't contain solid immovable sprites."""
         return ((x, y) in self.cells
                 and self.cells[x, y].sprite_can_enter
                 and all(spr.is_movable for spr in self.solids_at((x, y)))
