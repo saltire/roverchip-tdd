@@ -73,6 +73,7 @@ class MenuScreen(Screen):
             self.col_offset = min(scol, max(self.col_offset, scol - columns + 1))
 
             # render and blit each column of options that is showing
+            # TODO: render all columns at init, and rerender only if font size or row count changes
             for c, col in enumerate(range(self.col_offset, columns)):
                 opts = self.options[self.rows * col:self.rows * (col + 1)]
                 opttext = self.font.render('\n'.join(opt[0] for opt in opts),
@@ -88,33 +89,22 @@ class MenuScreen(Screen):
             self.redraw = False
 
 
-    def run_frame(self, elapsed, keys):
+    def run_frame(self, elapsed, events):
         """Scan for keystrokes and either switch menus or take actions."""
-        for key, keydown in keys:
-            # arrow keys: change selection
-            if keydown and key in (pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_LEFT):
-                col = self.selected / self.rows
-                totalcols = (len(self.options) + self.rows - 1) / self.rows
-                old_selected = self.selected
 
-                if key in (pygame.K_UP, pygame.K_DOWN):
-                    # move marker up or down
-                    mod = 1 if key == pygame.K_DOWN else -1
-                    self.selected = max(0, min(self.selected + mod, len(self.options) - 1))
+        for event in events:
+            # arrow keypresses
+            if event.type == pygame.KEYDOWN and event.key in self.movekeys:
+                movedir = self.movekeys.index(event.key)
+                self._move_marker(((0, 1), (1, 0), (0, -1), (-1, 0))[movedir])
 
-                elif key == pygame.K_LEFT and col > 0:
-                    # move marker left
-                    self.selected -= self.rows
+            # joystick hat motion
+            elif event.type == pygame.JOYHATMOTION and event.joy == 0 and event.value != (0, 0):
+                self._move_marker(event.value)
 
-                elif key == pygame.K_RIGHT and col < totalcols - 1:
-                    # move marker right
-                    self.selected = min(self.selected + self.rows, len(self.options) - 1)
-
-                if self.selected != old_selected:
-                    self.redraw = True
-
-            # enter key: open selected screen or quit this menu
-            elif keydown and key == pygame.K_RETURN:
+            # enter key or joystick button (currently any button from 0-3)
+            elif ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or
+                  (event.type == pygame.JOYBUTTONDOWN and event.button <= 3)):
                 func = self.options[self.selected][1]
                 args = self.options[self.selected][2:]
 
@@ -127,9 +117,29 @@ class MenuScreen(Screen):
                 self.resize_view()
                 self.selected = 0
 
-            # escape key: quit menu
-            elif keydown and key == pygame.K_ESCAPE:
+            # escape key
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return False
+
+
+    def _move_marker(self, (dx, dy)):
+        """Move the menu marker up, down, left or right."""
+        col = self.selected / self.rows
+        totalcols = (len(self.options) + self.rows - 1) / self.rows
+        old_selected = self.selected
+
+        if dy:
+            # move marker up or down
+            self.selected = max(0, min(self.selected - dy, len(self.options) - 1))
+        elif dx:
+            # move marker left or right
+            if 0 <= col + dx < totalcols:
+                # move up to last item in the column if we're below it
+                self.selected = min(self.selected + (self.rows * dx),
+                                    len(self.options) - 1)
+
+        if self.selected != old_selected:
+            self.redraw = True
 
 
 class MainMenuScreen(MenuScreen):

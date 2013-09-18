@@ -58,7 +58,7 @@ class Test_Player(unittest.TestCase):
 
 
     def test_player_starts_moving_after_move_event(self):
-        self.level.handle_event('move', 2)
+        self.player.handle_action('move', 2)
         self.player.start_turn()
         self.assertEqual(self.player.to_move, 1)
 

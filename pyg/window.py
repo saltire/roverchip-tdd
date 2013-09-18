@@ -7,7 +7,12 @@ import config
 
 class Window:
     def __init__(self, size=config.windowsize):
-        # init config
+        pygame.init()
+
+        # init a joystick if connected
+        if pygame.joystick.get_count():
+            pygame.joystick.Joystick(0).init()
+
         self.clock = pygame.time.Clock()
 
         self.screens = []
@@ -50,8 +55,8 @@ class Window:
             # tick clock
             elapsed = float(self.clock.tick(60))
 
-            # get events, pass key events to level
-            keys = []
+            # get events, pass input events to level
+            events = []
             for event in pygame.event.get():
                 # close window
                 if event.type == pygame.QUIT:
@@ -61,11 +66,9 @@ class Window:
                 elif event.type == pygame.VIDEORESIZE:
                     self.init_window(event.size, screen)
 
-                # get keypresses
-                elif event.type == pygame.KEYDOWN:
-                    keys.append((event.key, 1))
-                elif event.type == pygame.KEYUP:
-                    keys.append((event.key, 0))
+                elif event.type in (pygame.KEYDOWN, pygame.KEYUP,
+                                    pygame.JOYHATMOTION, pygame.JOYBUTTONDOWN):
+                    events.append(event)
 
             # run a frame of this screen
-            result = screen.run_frame(elapsed, keys)
+            result = screen.run_frame(elapsed, events)

@@ -1,4 +1,9 @@
+import pygame
+
+
 class Screen:
+    movekeys = pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_LEFT
+
     def set_window(self, window):
         """Store the window object, from whose view to create subsurfaces.
         Then call the resize view hook."""
@@ -16,7 +21,7 @@ class Screen:
         pass
 
 
-    def run_frame(self, elapsed, keys):
+    def run_frame(self, elapsed, keys, joy):
         """Process any input and take any actions for one frame,
         and optionally return a status."""
         pass

@@ -8,8 +8,6 @@ from roverchip import leveltypes
 
 
 class GameScreen(Screen):
-    move_keys = pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN, pygame.K_LEFT
-
     def __init__(self, leveldata):
         celldata, spritedata = leveldata.get_data()
         self.level = leveltypes[leveldata.leveltype](celldata, spritedata, config.animation)
@@ -83,23 +81,25 @@ class GameScreen(Screen):
                 (sx * self.cellsize - left, sy * self.cellsize - top))
 
 
-    def run_frame(self, elapsed, keys):
+    def run_frame(self, elapsed, events):
+        actions = []
+
         # handle events
-        events = []
-        for key, keydown in keys:
-            # skip level
-            if keydown and key == pygame.K_RETURN:
+        for event in events:
+            # enter: skip level
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                 return True
 
-            # exit
-            if keydown and key == pygame.K_ESCAPE:
+            # escape: quit to menu
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return False
 
-            # move event
-            if key in self.move_keys:
-                events.append(('move', self.move_keys.index(key), keydown))
+            # arrow keypresses
+            elif event.type in (pygame.KEYUP, pygame.KEYDOWN) and event.key in self.movekeys:
+                actions.append(('move', self.movekeys.index(event.key),
+                                event.type == pygame.KEYDOWN))
 
-        self.level.update_level(events, elapsed)
+        self.level.update_level(actions, elapsed)
 
         if self.level.check_for_failure():
             return False

@@ -11,7 +11,13 @@ class Player(Sprite):
         self.move_key_queue = []            # current move key being pressed
 
 
-    def handle_move_event(self, direction, keydown=True):
+    def handle_action(self, etype, *args):
+        """Given some action commands, take the necessary actions."""
+        if etype == 'move':
+            self.handle_move_action(*args)
+
+
+    def handle_move_action(self, direction, keydown=True):
         """Set or clear the current direction key, depending on whether
         there is a direction key set already."""
         # move key pressed - set key
