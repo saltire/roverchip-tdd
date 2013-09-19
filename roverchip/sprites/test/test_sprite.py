@@ -11,7 +11,6 @@ class Test_Sprite(unittest.TestCase):
                  [1, 0, 0],
                  [1, 0, 0]]
         ctypes = [('Floor',), ('Wall',)]
-
         celldata, spritedata = MockDataFile(cells, ctypes).get_data()
 
         self.level = Level(celldata, spritedata)

@@ -3,24 +3,36 @@ class Sprite:
         self.level = level
 
         # initial values
-        self.pos = x, y  # sprite's coords on cell grid
-        self.rotate = rotate  # rotation of the tile
-        self.to_move = 0  # distance left to move
-        self.move_dir = 0  # direction sprite is moving
-        self.delay_left = 0  # time before sprite can move again
+        self.pos = x, y             # sprite's coords on cell grid
+        self.rotate = rotate        # rotation of the tile
+        self.to_move = 0            # distance left to move
+        self.move_dir = 0           # direction sprite is moving
+        self.delay_left = 0         # time before sprite can move again
 
         # defaults to override
-        self.layer = 0  # layer the sprite is rendered on
-        self.size = 1  # size of sprite in cells
-        self.speed = 4  # cells moved per second
-        self.tile_rotates = False  # tile rotates according to self.facing
-        self.is_movable = False  # can be pushed by player
-        self.is_solid = False  # blocks sprites from entering
+        self.layer = 0              # layer the sprite is rendered on
+        self.size = 1               # size of sprite in cells
+        self.speed = 4              # cells moved per second
+        self.tile_rotates = False   # tile rotates according to self.facing
+        self.is_bridge = False      # allows the player to cross water
+        self.is_movable = False     # can be pushed by player
+        self.is_solid = False       # blocks sprites from entering
 
 
     def get_type(self):
         """Return the type of the sprite, i.e. the class name."""
         return self.__class__.__name__
+
+
+    def get_cell(self):
+        """If the sprite is completely inside a cell, return the cell."""
+        return self.level.cells.get(self.pos, None)
+
+
+    def get_cell_type(self):
+        """If the sprite is completely inside a cell, return the cell type."""
+        cell = self.get_cell()
+        return cell.get_type() if cell is not None else None
 
 
     def _get_dest_pos(self, direction, distance=1):

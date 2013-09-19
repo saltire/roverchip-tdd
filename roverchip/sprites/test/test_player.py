@@ -12,9 +12,7 @@ class Test_Player(unittest.TestCase):
                  [0, 0, 0],
                  [0, 0, 0],
                  [0, 0, 0]]
-        ctypes = [('Floor',),
-                  ('Wall',)]
-
+        ctypes = [('Floor',), ('Wall',)]
         self.level = Level(*MockDataFile(cells, ctypes).get_data())
 
         self.player = self.level.add_sprite('Player', (0, 1))
@@ -39,13 +37,13 @@ class Test_Player(unittest.TestCase):
         self.assertEqual(self.crate.pos, (2, 1))
 
 
-    def test_player_doesnt_push_movable_without_empty_cell_behind(self):
+    def test_player_doesnt_push_movable_with_solid_in_cell_behind(self):
         self.level.add_sprite('Crate', (2, 1))
         self.player.attempt_move(1)
         self.assertEqual(self.player.to_move, 0)
 
 
-    def test_player_doesnt_push_movable_without_passable_cell_behind(self):
+    def test_player_doesnt_push_movable_with_level_edge_behind(self):
         self.level.add_sprite('Crate', (0, 0))
         self.player.attempt_move(0)
         self.assertEqual(self.player.to_move, 0)

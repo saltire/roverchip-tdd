@@ -7,7 +7,7 @@ class Robot(Sprite):
 
         self.is_solid = True
 
-        self.follow_dir = follow_dir
+        self.follow_dir = follow_dir  # 0 to follow left wall, 1 to follow right wall
 
 
     def start_turn(self):

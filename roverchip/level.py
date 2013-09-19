@@ -56,6 +56,12 @@ class Level:
         pass
 
 
+    def get_cell_type(self, (x, y)):
+        """If a cell exists at the given position, return its type."""
+        cell = self.cells.get((x, y), None)
+        return cell.get_type() if cell is not None else None
+
+
     def sprites_by_type(self, stype):
         """Return all sprites whose type matche the given string."""
         return [spr for spr in self.sprites if spr.get_type() == stype]
@@ -111,8 +117,11 @@ class Level:
 
 
     def player_can_enter(self, (x, y)):
-        """Return true if cell exists and doesn't contain solid immovable sprites."""
+        """Return true if cell exists, doesn't contain solid immovable sprites,
+        and doesn't specify no player."""
         return ((x, y) in self.cells
-                and self.cells[x, y].sprite_can_enter
-                and all(spr.is_movable for spr in self.solids_at((x, y)))
+                and (self.cells[x, y].player_can_enter
+                     or (self.cells[x, y].get_type() == 'Water'
+                         and any(spr.is_bridge for spr in self.sprites_in((x, y)))))
+                and all(spr.is_movable and spr.get_cell() for spr in self.solids_at((x, y)))
                 )

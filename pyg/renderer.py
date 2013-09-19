@@ -22,6 +22,11 @@ class Renderer:
                 else self.tileset.get_tile(self.tiles[obj.get_type()], obj.rotate))
 
 
+    def render_crate(self, crate):
+        """Return either a regular or sunken crate tile."""
+        return self.tileset.get_tile((3, 1) if crate.is_bridge else (2, 1))
+
+
     def render_door(self, door):
         """Return a door tile of the correct colour."""
         return self.tileset.get_tile((5, 2 + door.colour), door.rotate)
