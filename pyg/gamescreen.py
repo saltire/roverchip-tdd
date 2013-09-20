@@ -1,3 +1,5 @@
+import operator
+
 import pygame
 
 import config
@@ -75,7 +77,7 @@ class GameScreen(Screen):
         self.view.blit(self.background, (0, 0), (left, top, width, height))
 
         # blit sprites onto the view
-        for sprite in self.level.sprites:
+        for sprite in sorted(self.level.sprites, key=operator.attrgetter('layer')):
             sx, sy = sprite.pos
             self.view.blit(self.renderer.render(sprite),
                 (sx * self.cellsize - left, sy * self.cellsize - top))

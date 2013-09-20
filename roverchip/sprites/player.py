@@ -6,6 +6,7 @@ class Player(Sprite):
         Sprite.__init__(self, level, (x, y))
 
         self.tile_rotates = True
+        self.layer = 1
 
         self.pushing = set()                # sprites being pushed
         self.move_key_queue = []            # current move key being pressed
