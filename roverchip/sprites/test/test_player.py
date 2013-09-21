@@ -55,6 +55,33 @@ class Test_Player(unittest.TestCase):
         self.assertEqual(self.player.pos, (0, 1))
 
 
+    def test_followers_move_when_player_moves(self):
+        self.player.followers.add(self.crate)
+        self.player.attempt_move(2)
+        self.assertEqual(self.crate.to_move, 1)
+
+
+    def test_followers_move_toward_players_last_position(self):
+        self.player.followers.add(self.crate)
+        self.player.attempt_move(2)
+        self.assertEqual(self.crate.move_dir, 3)
+
+
+    def test_player_picks_up_items_when_arriving_in_their_cell(self):
+        key = self.level.add_sprite('Key', (0, 2))
+        self.player.attempt_move(2)
+        self.level.update_level([], self.celltime)
+        self.assertIn(key, self.player.carrying)
+
+
+    def test_carried_items_move_with_player(self):
+        key = self.level.add_sprite('Key', (0, 1))
+        self.player.carrying.add(key)
+        self.player.attempt_move(2)
+        self.level.update_level([], self.celltime)
+        self.assertEqual(key.pos, (0, 2))
+
+
     def test_player_starts_moving_after_move_event(self):
         self.player.handle_action('move', 2)
         self.player.start_turn()

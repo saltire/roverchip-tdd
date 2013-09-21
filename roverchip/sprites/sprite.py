@@ -15,6 +15,7 @@ class Sprite:
         self.speed = 4              # cells moved per second
         self.tile_rotates = False   # tile rotates according to self.facing
         self.is_bridge = False      # allows the player to cross water
+        self.is_item = False        # can be picked up by player
         self.is_movable = False     # can be pushed by player
         self.is_solid = False       # blocks sprites from entering
 
@@ -35,7 +36,7 @@ class Sprite:
         return cell.get_type() if cell is not None else None
 
 
-    def _get_dest_pos(self, direction, distance=1):
+    def get_pos_in_dir(self, direction, distance=1):
         """Given a direction and an optional distance, give the position
         after travelling that distance in that direction."""
         x, y = self.pos
@@ -43,6 +44,20 @@ class Sprite:
         # round to avoid floating-point errors
         return ((round(x + distance, 5), y) if direction % 2 else
                 (x, round(y + distance, 5)))
+
+
+    def get_dir_of_pos(self, (dx, dy)):
+        """Given a position, give the direction that position is in
+        relative to the current position, or None if it does not lie
+        in a straight line in a cardinal direction."""
+        x, y = self.pos
+        try:
+            return ((dx == x and dy < y),
+                    (dx > x and dy == y),
+                    (dx == x and dy > y),
+                    (dx < x and dy == y)).index(True)
+        except ValueError:
+            return None
 
 
     def start_move(self, direction):
@@ -75,6 +90,10 @@ class Sprite:
 
         if distance:
             self.to_move -= distance
-            self.pos = self._get_dest_pos(self.move_dir, distance)
+            self.pos = self.get_pos_in_dir(self.move_dir, distance)
 
         return distance
+
+
+    def after_move(self):
+        """This hook is called after a sprite arrives in a new cell."""

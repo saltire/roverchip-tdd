@@ -11,8 +11,8 @@ class Test_SokobanLevel(unittest.TestCase):
                  [0, 0, 0],
                  [0, 1, 1]]
         ctypes = [('Floor',), ('Grate',)]
-
         self.level = SokobanLevel(*MockDataFile(cells, ctypes).get_data())
+
         self.player = self.level.add_sprite('Player', (1, 0))
         self.level.add_sprite('Crate', (2, 2))
 

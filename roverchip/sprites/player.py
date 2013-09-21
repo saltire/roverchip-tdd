@@ -8,6 +8,8 @@ class Player(Sprite):
         self.tile_rotates = True
         self.layer = 1
 
+        self.carrying = set()               # sprites carried by the player
+        self.followers = set()              # sprites following the player
         self.pushing = set()                # sprites being pushed
         self.move_key_queue = []            # current move key being pressed
 
@@ -40,17 +42,36 @@ class Player(Sprite):
         """Start the player moving, and push movable objects."""
         self.rotate = direction
 
-        nextpos = self._get_dest_pos(direction)
+        nextpos = self.get_pos_in_dir(direction)
+
+        for door in self.level.solids_in(nextpos, 'Door'):
+            for key in self.level.sprites_by_type('Key'):
+                if key in self.carrying and key.colour == door.colour:
+                    door.is_solid = False
+                    # self.carrying.discard(key)
+                    # self.level.sprites.discard(key)
+                    break
+
+
         if self.level.player_can_enter(nextpos):
             movables = self.level.movables_at(nextpos)
             # proceed only if no movables or movables can be pushed
             if (not movables or
                 (movables and
                  self.level.sprite_can_enter(
-                     movables[0]._get_dest_pos(direction)))):
+                     self.get_pos_in_dir(direction, 2)))):
                 if movables:
                     self.pushing |= set(movables)
                 self.start_move(direction)
+
+
+    def start_move(self, direction):
+        """Start followers moving as well."""
+        Sprite.start_move(self, direction)
+        for item in self.carrying:
+            item.start_move(direction)
+        for follower in self.followers:
+            follower.start_move(follower.get_dir_of_pos(self.pos))
 
 
     def do_move(self, elapsed):
@@ -58,7 +79,22 @@ class Player(Sprite):
         distance = Sprite.do_move(self, elapsed)
 
         for spr in self.pushing.copy():
-            spr.pos = spr._get_dest_pos(self.move_dir, distance)
+            spr.pos = spr.get_pos_in_dir(self.move_dir, distance)
             if self.to_move == 0:
                 self.pushing.discard(spr)
+
+
+    def after_move(self):
+        """Pick up items in this cell, and start adjacent Rovers following."""
+        for sprite in self.level.sprites_in(self.pos):
+            if sprite.is_item and sprite not in self.carrying:
+                self.carrying.add(sprite)
+
+        for sprite in set.union(*[self.level.sprites_in(self.get_pos_in_dir(direction))
+                                  for direction in range(4)]):
+            if sprite.get_type() == 'Rover' and sprite not in self.followers:
+                self.followers.add(sprite)
+
+
+
 

@@ -5,4 +5,5 @@ class Rover(Sprite):
     def __init__(self, level, (x, y)):
         Sprite.__init__(self, level, (x, y))
 
-        self.is_solid = True
+        self.tile_rotates = True
+        self.layer = 1

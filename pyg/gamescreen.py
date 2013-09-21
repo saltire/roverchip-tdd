@@ -62,7 +62,7 @@ class GameScreen(Screen):
             self.redraw = False
 
         # find offset that places the player in the centre
-        px, py = self.level.sprites_by_type('Player')[0].pos
+        px, py = self.level.sprites_by_type('Player').pop().pos
         vw, vh = self.viewcells
         ox = px - (vw - 1) / 2.0
         oy = py - (vh - 1) / 2.0
