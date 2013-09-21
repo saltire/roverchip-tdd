@@ -62,7 +62,7 @@ class GameScreen(Screen):
             self.redraw = False
 
         # find offset that places the player in the centre
-        px, py = self.level.sprites_by_type('Player').pop().pos
+        px, py = self.level.sprites['Player'].pop().pos
         vw, vh = self.viewcells
         ox = px - (vw - 1) / 2.0
         oy = py - (vh - 1) / 2.0
@@ -77,7 +77,7 @@ class GameScreen(Screen):
         self.view.blit(self.background, (0, 0), (left, top, width, height))
 
         # blit sprites onto the view
-        for sprite in sorted(self.level.sprites, key=operator.attrgetter('layer')):
+        for sprite in sorted(self.level.sprites.active, key=operator.attrgetter('layer')):
             sx, sy = sprite.pos
             self.view.blit(self.renderer.render(sprite),
                 (sx * self.cellsize - left, sy * self.cellsize - top))

@@ -23,6 +23,6 @@ class Crate(Sprite):
             if flow_dir is not None:
                 nextcell = self.get_pos_in_dir(flow_dir)
                 if (self.level.get_cell_type(nextcell) == 'Water'
-                    and not self.level.sprites_at(nextcell)):
+                    and not self.level.sprites.at(nextcell)):
                     self.move_dir = flow_dir
                     self.to_move = 1

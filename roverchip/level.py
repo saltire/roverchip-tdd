@@ -1,4 +1,5 @@
 from cells import celltypes
+from spritegroup import SpriteGroup
 from sprites import spritetypes
 
 
@@ -12,7 +13,7 @@ class Level:
         self.width = len(set(x for x, _ in self.cells))
         self.height = len(set(y for _, y in self.cells))
 
-        self.sprites = set()
+        self.sprites = SpriteGroup()
         for sprite in spritedata:
             spritetype, (x, y), args = sprite[0], sprite[1], sprite[2:]
             self.add_sprite(spritetype, (x, y), *args)
@@ -29,24 +30,17 @@ class Level:
 
     def update_level(self, actions, elapsed):
         """Handle action commands and move sprites."""
-        for player in self.sprites_by_type('Player'):
+        for player in self.sprites['Player']:
             # this assumes there is only one player for now
             for action in actions:
                 player.handle_action(*action)
 
-        for spr in self.sprites:
+        for spr in self.sprites.active:
             spr.start_turn()
-        for spr in self.sprites:
+        for spr in self.sprites.active:
             spr.do_move(elapsed)
             if spr.get_cell():
                 spr.after_move()
-
-
-    def handle_action(self, etype, *args):
-        """Given some events, take the necessary actions."""
-        if etype == 'move':
-            player = self.sprites_by_type('Player')[0]
-            player.handle_move_event(*args)
 
 
     def check_for_success(self):
@@ -65,57 +59,12 @@ class Level:
         return cell.get_type() if cell is not None else None
 
 
-    def sprites_by_type(self, stype):
-        """Return all sprites whose type matche the given string."""
-        return set(spr for spr in self.sprites if spr.get_type() == stype)
-
-
-    def sprites_at(self, (x, y), stype=None):
-        """Return all sprites at the given position.
-        Optionally filter by sprite type."""
-        return set(spr for spr in self.sprites if spr.pos == (x, y)
-                   and (stype is None or stype == spr.get_type()))
-
-
-    def movables_at(self, (x, y), stype=None):
-        """Return all movable sprites at the given position.
-        Optionally filter by sprite type."""
-        return set(spr for spr in self.sprites_at((x, y), stype) if spr.is_movable)
-
-
-    def solids_at(self, (x, y), stype=None):
-        """Return all solid sprites at the given position.
-        Optionally filter by sprite type."""
-        return set(spr for spr in self.sprites_at((x, y), stype) if spr.is_solid)
-
-
-    def sprites_in(self, (x, y), stype=None):
-        """Return all sprites overlapping the cell at the given position.
-        Optionally filter by sprite type."""
-        return set(spr for spr in self.sprites if
-                   x - spr.size < spr.pos[0] < x + 1 and
-                   y - spr.size < spr.pos[1] < y + 1 and
-                   (stype is None or stype == spr.get_type()))
-
-
-    def movables_in(self, (x, y), stype=None):
-        """Return all movable sprites overlapping the cell at the given pos.
-        Optionally filter by sprite type."""
-        return set(spr for spr in self.sprites_in((x, y), stype) if spr.is_movable)
-
-
-    def solids_in(self, (x, y), stype=None):
-        """Return all solid sprites overlapping the cell at the given pos.
-        Optionally filter by sprite type."""
-        return set(spr for spr in self.sprites_in((x, y), stype) if spr.is_solid)
-
-
     def sprite_can_enter(self, (x, y)):
         """Return true if cell exists, doesn't contain solid sprites,
         and doesn't specify no sprites."""
         return ((x, y) in self.cells
                 and self.cells[x, y].sprite_can_enter
-                and not self.solids_at((x, y))
+                and not self.sprites.solid.at((x, y))
                 )
 
 
@@ -134,6 +83,6 @@ class Level:
         return ((x, y) in self.cells
                 and (self.cells[x, y].player_can_enter
                      or (self.cells[x, y].get_type() == 'Water'
-                         and any(spr.is_bridge for spr in self.sprites_in((x, y)))))
-                and all(spr.is_movable and spr.get_cell() for spr in self.solids_at((x, y)))
+                         and self.sprites.bridge.on((x, y))))
+                and all(spr.is_movable and spr.get_cell() for spr in self.sprites.solid.at((x, y)))
                 )

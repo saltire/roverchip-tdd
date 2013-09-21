@@ -14,6 +14,7 @@ class Sprite:
         self.size = 1               # size of sprite in cells
         self.speed = 4              # cells moved per second
         self.tile_rotates = False   # tile rotates according to self.facing
+        self.is_active = True       # whether the sprite is in the game
         self.is_bridge = False      # allows the player to cross water
         self.is_item = False        # can be picked up by player
         self.is_movable = False     # can be pushed by player

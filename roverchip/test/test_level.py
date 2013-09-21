@@ -48,34 +48,22 @@ class Test_Level(unittest.TestCase):
 
 
     def test_level_returns_sprites_at_cell(self):
-        self.assertItemsEqual(self.level.sprites_at((1, 2)), [self.player])
-        self.assertItemsEqual(self.level.sprites_at((1, 1)), [self.crate])
-        self.assertItemsEqual(self.level.sprites_at((1, 0)), [])
-
-
-    def test_level_returns_movables_at_cell(self):
-        self.assertItemsEqual(self.level.movables_at((1, 2)), [])
-        self.assertItemsEqual(self.level.movables_at((1, 1)), [self.crate])
-        self.assertItemsEqual(self.level.movables_at((1, 0)), [])
-
-
-    def test_level_returns_solids_at_cell(self):
-        self.assertItemsEqual(self.level.solids_at((1, 2)), [])
-        self.assertItemsEqual(self.level.solids_at((1, 1)), [self.crate])
-        self.assertItemsEqual(self.level.solids_at((1, 0)), [])
+        self.assertItemsEqual(self.level.sprites.at((1, 2)), [self.player])
+        self.assertItemsEqual(self.level.sprites.at((1, 1)), [self.crate])
+        self.assertItemsEqual(self.level.sprites.at((1, 0)), [])
 
 
     def test_level_returns_sprites_partially_in_cell(self):
         crate = self.level.add_sprite('Crate', (2.5, 2))
-        self.assertItemsEqual(self.level.sprites_in((2, 1)), [])
-        self.assertItemsEqual(self.level.sprites_in((2, 2)), [crate])
-        self.assertItemsEqual(self.level.sprites_in((3, 2)), [crate])
+        self.assertItemsEqual(self.level.sprites.on((2, 1)), [])
+        self.assertItemsEqual(self.level.sprites.on((2, 2)), [crate])
+        self.assertItemsEqual(self.level.sprites.on((3, 2)), [crate])
 
 
     def test_level_returns_sprites_by_type(self):
-        self.assertItemsEqual(self.level.sprites_by_type('Player'), [self.player])
-        self.assertItemsEqual(self.level.sprites_by_type('Crate'), [self.crate])
-        self.assertItemsEqual(self.level.sprites_by_type('Random'), [])
+        self.assertItemsEqual(self.level.sprites['Player'], [self.player])
+        self.assertItemsEqual(self.level.sprites['Crate'], [self.crate])
+        self.assertItemsEqual(self.level.sprites['Random'], [])
 
 
     def test_sprites_cant_enter_cells_out_of_bounds(self):

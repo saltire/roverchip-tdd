@@ -88,6 +88,6 @@ class LED:
 
 
     def get_pixel_colour(self, level, (cx, cy)):
-        sprites = level.sprites_at((cx, cy))
+        sprites = level.sprites.at((cx, cy))
         return (self.colours[sprites[0].get_type()] if sprites else
                    self.colours[level.cells[cx, cy].get_type()])

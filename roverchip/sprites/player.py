@@ -44,24 +44,19 @@ class Player(Sprite):
 
         nextpos = self.get_pos_in_dir(direction)
 
-        for door in self.level.solids_in(nextpos, 'Door'):
-            for key in self.level.sprites_by_type('Key'):
+        for door in self.level.sprites['Door'].solid.on(nextpos):
+            for key in self.level.sprites['Key']:
                 if key in self.carrying and key.colour == door.colour:
                     door.is_solid = False
-                    # self.carrying.discard(key)
-                    # self.level.sprites.discard(key)
+                    key.is_active = False
+                    self.carrying.discard(key)
                     break
 
-
         if self.level.player_can_enter(nextpos):
-            movables = self.level.movables_at(nextpos)
+            movables = self.level.sprites.movable.at(nextpos)
             # proceed only if no movables or movables can be pushed
-            if (not movables or
-                (movables and
-                 self.level.sprite_can_enter(
-                     self.get_pos_in_dir(direction, 2)))):
-                if movables:
-                    self.pushing |= set(movables)
+            if (not movables or self.level.sprite_can_enter(self.get_pos_in_dir(direction, 2))):
+                self.pushing |= movables
                 self.start_move(direction)
 
 
@@ -86,12 +81,12 @@ class Player(Sprite):
 
     def after_move(self):
         """Pick up items in this cell, and start adjacent Rovers following."""
-        for sprite in self.level.sprites_in(self.pos):
-            if sprite.is_item and sprite not in self.carrying:
-                self.carrying.add(sprite)
+        for item in self.level.sprites.item.on(self.pos):
+            if item not in self.carrying:
+                self.carrying.add(item)
 
-        for sprite in set.union(*[self.level.sprites_in(self.get_pos_in_dir(direction))
-                                  for direction in range(4)]):
+        for sprite in self.level.sprites.on(*[self.get_pos_in_dir(direction)
+                                              for direction in range(4)]):
             if sprite.get_type() == 'Rover' and sprite not in self.followers:
                 self.followers.add(sprite)
 
