@@ -101,7 +101,7 @@ class GameScreen(Screen):
 
             # escape: quit to menu
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                return False
+                return 'quit'
 
             # arrow keypresses
             elif event.type in (pygame.KEYUP, pygame.KEYDOWN) and event.key in self.movekeys:

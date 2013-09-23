@@ -169,9 +169,13 @@ class LevelMenuScreen(MenuScreen):
 
 
     def level(self, i):
-        """Run each level in sequence, stopping if one returns false.
+        """Run each level in sequence. If one returns false, repeat it.
         If passed a number, skip that many levels."""
         for ldata in self.leveldata[i:]:
-            if self.window.run(GameScreen(ldata)) is False:
-                return False
+            while True:
+                status = self.window.run(GameScreen(ldata))
+                if status == True: # success
+                    break
+                if status == 'quit':
+                    return False
         return False
