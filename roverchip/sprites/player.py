@@ -33,7 +33,12 @@ class Player(Sprite):
 
 
     def start_turn(self):
-        """Start the player moving if stopped and key is down."""
+        """Kill the player if it's touching any enemies.
+        Start the player moving if stopped and key is down."""
+        if self.level.sprites.enemy.on(self.pos):
+            self.is_active = False
+            return
+
         if (self.move_key_queue and not self.to_move and not self.delay_left):
             self.attempt_move(self.move_key_queue[0])
 
@@ -63,24 +68,24 @@ class Player(Sprite):
     def start_move(self, direction):
         """Start followers moving as well."""
         Sprite.start_move(self, direction)
-        for item in self.carrying:
-            item.start_move(direction)
+        # followers move toward player's previous location
         for follower in self.followers:
             follower.start_move(follower.get_dir_of_pos(self.pos))
 
 
     def do_move(self, elapsed):
-        """Move the player and also move pushed sprites."""
-        distance = Sprite.do_move(self, elapsed)
-
-        for spr in self.pushing.copy():
-            spr.pos = spr.get_pos_in_dir(self.move_dir, distance)
-            if self.to_move == 0:
-                self.pushing.discard(spr)
+        """Move carried and pushed items at the same time as the player."""
+        Sprite.do_move(self, elapsed)
+        for item in self.carrying:
+            item.pos = self.pos
+        for movable in self.pushing:
+            movable.pos = self.get_pos_in_dir(self.move_dir)
 
 
     def after_move(self):
         """Pick up items in this cell, and start adjacent Rovers following."""
+        self.pushing.clear()
+
         for item in self.level.sprites.item.on(self.pos):
             if item not in self.carrying:
                 self.carrying.add(item)
@@ -91,5 +96,7 @@ class Player(Sprite):
                 self.followers.add(sprite)
 
 
-
-
+    def end_turn(self):
+        """Kill the player if it is overlapping any enemies."""
+        if self.level.sprites.enemy.on(self.pos):
+            self.is_active = False

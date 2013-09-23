@@ -13,9 +13,10 @@ class Sprite:
         self.layer = 0              # layer the sprite is rendered on
         self.size = 1               # size of sprite in cells
         self.speed = 4              # cells moved per second
-        self.tile_rotates = False   # tile rotates according to self.facing
+        self.tile_rotates = False   # tile rotates according to movement
         self.is_active = True       # whether the sprite is in the game
         self.is_bridge = False      # allows the player to cross water
+        self.is_enemy = False       # kills the player on touch
         self.is_item = False        # can be picked up by player
         self.is_movable = False     # can be pushed by player
         self.is_solid = False       # blocks sprites from entering
@@ -98,3 +99,8 @@ class Sprite:
 
     def after_move(self):
         """This hook is called after a sprite arrives in a new cell."""
+
+
+    def end_turn(self):
+        """This hook is called at the end of each frame."""
+        pass

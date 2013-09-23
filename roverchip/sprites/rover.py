@@ -7,3 +7,5 @@ class Rover(Sprite):
 
         self.tile_rotates = True
         self.layer = 1
+
+        self.is_solid = True

@@ -30,3 +30,9 @@ class Test_RoverLevel(unittest.TestCase):
         self.player.pos = 2, 1
         self.player.followers.add(self.rover)
         self.assertTrue(self.level.check_for_success())
+
+
+    def test_level_fails_if_player_not_active(self):
+        self.assertFalse(self.level.check_for_failure())
+        self.player.is_active = False
+        self.assertTrue(self.level.check_for_failure())

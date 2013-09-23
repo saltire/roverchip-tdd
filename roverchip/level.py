@@ -35,12 +35,14 @@ class Level:
             for action in actions:
                 player.handle_action(*action)
 
-        for spr in self.sprites.active:
-            spr.start_turn()
-        for spr in self.sprites.active:
-            spr.do_move(elapsed)
-            if spr.get_cell():
-                spr.after_move()
+        # call sprite hooks
+        for sprite in self.sprites.active:
+            sprite.start_turn()
+            sprite.do_move(elapsed)
+            if sprite.get_cell():
+                sprite.after_move()
+        for sprite in self.sprites.active:
+            sprite.end_turn()
 
 
     def check_for_success(self):
@@ -63,26 +65,25 @@ class Level:
         """Return true if cell exists, doesn't contain solid sprites,
         and doesn't specify no sprites."""
         return ((x, y) in self.cells
+                and not self.sprites.solid.on((x, y))
                 and self.cells[x, y].sprite_can_enter
-                and not self.sprites.solid.at((x, y))
                 )
 
 
     def robot_can_enter(self, (x, y)):
         """Return true if sprites can enter the cell,
         and it doesn't specify no robots."""
-        return (self.sprite_can_enter((x, y))
-                and self.cells[x, y].robot_can_enter
-                )
+        return (self.sprite_can_enter((x, y)) and self.cells[x, y].robot_can_enter)
 
 
     def player_can_enter(self, (x, y)):
         """Return true if cell exists, doesn't contain solid immovable sprites
-        or solid sprites partially in the cell, and doesn't specify no player.
+        or solid sprites partially in the cell (except Rover), and doesn't specify no player.
         If the cell is water, there must be a bridge sprite completely in it."""
         return ((x, y) in self.cells
                 and (self.cells[x, y].player_can_enter
                      or (self.cells[x, y].get_type() == 'Water'
                          and self.sprites.bridge.on((x, y))))
-                and all(spr.is_movable and spr.get_cell() for spr in self.sprites.solid.at((x, y)))
+                and all((spr.is_movable and spr.get_cell()) or spr.get_type() == 'Rover'
+                        for spr in self.sprites.solid.on((x, y)))
                 )

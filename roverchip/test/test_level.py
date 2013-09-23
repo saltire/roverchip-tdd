@@ -77,9 +77,19 @@ class Test_Level(unittest.TestCase):
         self.assertFalse(self.level.sprite_can_enter((1, 1)))
 
 
-    def test_robots_cant_enter_no_robot_cells_even_If_empty(self):
+    def test_robots_cant_enter_no_robot_cells_even_if_empty(self):
         self.assertFalse(self.level.robot_can_enter((1, 0)))
 
 
     def test_player_can_enter_cells_with_movables(self):
         self.assertTrue(self.level.player_can_enter((1, 1)))
+
+
+    def test_player_cant_enter_cells_with_robot(self):
+        self.level.add_sprite('Robot', (2.5, 2))
+        self.assertFalse(self.level.player_can_enter((2, 2)))
+
+
+    def test_player_can_enter_cells_with_rover(self):
+        self.level.add_sprite('Rover', (2.5, 2))
+        self.assertTrue(self.level.player_can_enter((2, 2)))

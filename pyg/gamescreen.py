@@ -86,6 +86,11 @@ class GameScreen(Screen):
 
 
     def run_frame(self, elapsed, events):
+        if self.level.check_for_failure():
+            return False
+        if self.level.check_for_success():
+            return True
+
         actions = []
 
         # handle events
@@ -104,8 +109,3 @@ class GameScreen(Screen):
                                 event.type == pygame.KEYDOWN))
 
         self.level.update_level(actions, elapsed)
-
-        if self.level.check_for_failure():
-            return False
-        if self.level.check_for_success():
-            return True
