@@ -29,7 +29,10 @@ class Renderer:
 
     def render_door(self, door):
         """Return a door tile of the correct colour."""
-        return self.tileset.get_tile((5, 2 + door.colour), door.rotate)
+        if door.is_solid:
+            return self.tileset.get_tile((5, 2 + door.colour), door.rotate)
+        else:
+            return None
 
 
     def render_key(self, key):

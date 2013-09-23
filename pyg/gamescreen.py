@@ -56,8 +56,9 @@ class GameScreen(Screen):
                 (self.level.width * self.cellsize,
                  self.level.height * self.cellsize))
             for (cx, cy), cell in self.level.cells.items():
-                self.background.blit(self.renderer.render(cell),
-                                     (cx * self.cellsize, cy * self.cellsize))
+                tile = self.renderer.render(cell)
+                if tile:
+                    self.background.blit(tile, (cx * self.cellsize, cy * self.cellsize))
 
             self.redraw = False
 
@@ -79,8 +80,9 @@ class GameScreen(Screen):
         # blit sprites onto the view
         for sprite in sorted(self.level.sprites.active, key=operator.attrgetter('layer')):
             sx, sy = sprite.pos
-            self.view.blit(self.renderer.render(sprite),
-                (sx * self.cellsize - left, sy * self.cellsize - top))
+            tile = self.renderer.render(sprite)
+            if tile:
+                self.view.blit(tile, (sx * self.cellsize - left, sy * self.cellsize - top))
 
 
     def run_frame(self, elapsed, events):
