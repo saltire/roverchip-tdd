@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="14" height="10" tilewidth="16" tileheight="16">
  <properties>
-  <property name="leveltype" value="SokobanLevel"/>
+  <property name="leveltype" value="Sokoban"/>
   <property name="title" value="Sokoban 2"/>
  </properties>
- <tileset firstgid="1" source="../roverchip/leveldata/maptiles.tsx"/>
+ <tileset firstgid="1" source="../roverchip/levelfiles/maptiles.tsx"/>
  <layer name="Tile Layer 1" width="14" height="10">
   <data encoding="base64" compression="zlib">
    eJxjYmBgYCIBwwCILQjFjFDMhMRmRBNHxsTqQ9ePSx+6+YT04TKfFPsI+RGbm9DtQdaLHK74woIUffjiA1kfKRgAzI8BYw==

@@ -9,7 +9,7 @@ class Test_Rover(unittest.TestCase):
     def setUp(self):
         cells = [[0, 0, 0]]
         ctypes = [('Floor',)]
-        self.level = Level(*MockDataFile(cells, ctypes).get_data())
+        self.level = Level(MockDataFile(cells, ctypes))
 
         self.player = self.level.add_sprite('Player', (0, 0))
         self.rover = self.level.add_sprite('Rover', (2, 0))

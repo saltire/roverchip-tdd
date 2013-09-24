@@ -7,7 +7,7 @@ from roverchip.test.test_level import MockDataFile
 
 class Test_SpriteGroup(unittest.TestCase):
     def setUp(self):
-        self.level = Level(*MockDataFile([], []).get_data())
+        self.level = Level(MockDataFile([], []))
 
         self.player = self.level.add_sprite('Player', (0, 0))
         self.rover = self.level.add_sprite('Rover', (1, 1))

@@ -11,13 +11,13 @@ class Test_Sprite(unittest.TestCase):
                  [1, 0, 0],
                  [1, 0, 0]]
         ctypes = [('Floor',), ('Wall',)]
-        celldata, spritedata = MockDataFile(cells, ctypes).get_data()
+        levelfile = MockDataFile(cells, ctypes)
 
-        self.level = Level(celldata, spritedata)
+        self.level = Level(levelfile)
         self.sprite = self.level.add_sprite('Sprite', (1, 2))
         self.celltime = 1000 / self.sprite.speed  # time to move 1 cell
 
-        self.level_noanim = Level(celldata, spritedata, False)
+        self.level_noanim = Level(levelfile, False)
         self.sprite_noanim = self.level_noanim.add_sprite('Sprite', (1, 2))
         self.celltime_noanim = 1000 / self.sprite.speed  # time to move 1 cell
 

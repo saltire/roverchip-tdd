@@ -4,7 +4,9 @@ from sprites import spritetypes
 
 
 class Level:
-    def __init__(self, celldata, spritedata, animation=True):
+    def __init__(self, levelfile, animation=True):
+        celldata, spritedata = levelfile.get_data()
+
         self.cells = {}
         for (x, y), cell in celldata.items():
             celltype, args = cell[0], cell[1:]

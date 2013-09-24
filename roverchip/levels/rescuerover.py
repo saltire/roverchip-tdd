@@ -1,7 +1,7 @@
-from level import Level
+from roverchip.level import Level
 
 
-class RoverLevel(Level):
+class RescueRover(Level):
     def check_for_success(self):
         """Return true if the player is in an Exit cell and Rover is following."""
         player = self.sprites['Player'].pop()

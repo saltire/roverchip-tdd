@@ -2,10 +2,10 @@ import inspect
 import os
 
 
-celltypes = {}
+leveltypes = {}
 
 for mfile in os.listdir(os.path.dirname(__file__)):
     if mfile[-3:] == '.py':
-        # import module and add all its classes into celltypes
+        # import module and add all its classes into leveltypes
         module = __import__(mfile[:-3], globals())
-        celltypes.update(dict(inspect.getmembers(module, inspect.isclass)))
+        leveltypes.update(dict(inspect.getmembers(module, inspect.isclass)))

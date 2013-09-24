@@ -3,7 +3,7 @@ import sys
 import pygame
 
 from arduino import Arduino
-from roverchip import leveltypes
+from roverchip.levels import leveltypes
 
 
 class LED:
@@ -26,9 +26,9 @@ class LED:
         self.view = pygame.display.set_mode((w * 8, h * 8))
 
 
-    def run_level(self, leveldata):
-        celldata, spritedata = leveldata.get_data()
-        level = leveltypes[leveldata.leveltype](celldata, spritedata, False)
+    def run_level(self, levelfile):
+        celldata, spritedata = levelfile.get_data()
+        level = gametypes[levelfile.gametype](celldata, spritedata, False)
 
         w, h = self.size
         ox, oy = (w - level.width) / 2, (h - level.height) / 2

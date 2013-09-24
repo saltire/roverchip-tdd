@@ -1,16 +1,16 @@
 import unittest
 
-from roverchip.roverlevel import RoverLevel
+from roverchip.levels.rescuerover import RescueRover
 
-from test_level import MockDataFile
+from roverchip.test.test_level import MockDataFile
 
 
-class Test_RoverLevel(unittest.TestCase):
+class Test_RescueRover(unittest.TestCase):
     def setUp(self):
         cells = [[0, 0, 0],
                  [0, 0, 1]]
         ctypes = [('Floor',), ('Exit',)]
-        self.level = RoverLevel(*MockDataFile(cells, ctypes).get_data())
+        self.level = RescueRover(MockDataFile(cells, ctypes))
 
         self.player = self.level.add_sprite('Player', (2, 0))
         self.rover = self.level.add_sprite('Rover', (0, 0))

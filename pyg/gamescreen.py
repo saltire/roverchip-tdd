@@ -4,13 +4,13 @@ import config
 from renderer import Renderer
 from screen import Screen
 from tileset import Tileset
-from roverchip import leveltypes
+from roverchip.levels import leveltypes
 
 
 class GameScreen(Screen):
-    def __init__(self, leveldata):
-        celldata, spritedata = leveldata.get_data()
-        self.level = leveltypes[leveldata.leveltype](celldata, spritedata, config.animation)
+    def __init__(self, levelfile):
+        self.level = (leveltypes[levelfile.properties.get('leveltype', 'Level')]
+                      (levelfile, config.animation))
         self.tileset = Tileset(config.tilepath, config.tilesize)
         self.renderer = Renderer(self.tileset)
 

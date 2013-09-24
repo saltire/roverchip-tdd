@@ -11,7 +11,7 @@ class TestCrate(unittest.TestCase):
                  [1, 4]
                  ]
         ctypes = [('Water', 0), ('Water', 1), ('Water', 2), ('Water', 3), ('Floor',)]
-        self.level = Level(*MockDataFile(cells, ctypes).get_data())
+        self.level = Level(MockDataFile(cells, ctypes))
 
         self.crate = self.level.add_sprite('Crate', (0, 0))
 

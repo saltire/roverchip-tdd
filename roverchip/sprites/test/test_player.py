@@ -13,7 +13,7 @@ class Test_Player(unittest.TestCase):
                  [0, 0, 0],
                  [0, 0, 0]]
         ctypes = [('Floor',), ('Wall',)]
-        self.level = Level(*MockDataFile(cells, ctypes).get_data())
+        self.level = Level(MockDataFile(cells, ctypes))
 
         self.player = self.level.add_sprite('Player', (0, 1))
         self.crate = self.level.add_sprite('Crate', (1, 1))

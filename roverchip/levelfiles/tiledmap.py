@@ -6,10 +6,10 @@ try:
 except ImportError:
     import xml.etree.ElementTree as etree
 
-from leveldata import LevelData
+from levelfile import LevelFile
 
 
-class TiledMap(LevelData):
+class TiledMap(LevelFile):
     tiles = {(0, 0): ('Floor',),
              (1, 0): ('Wall',),
              (2, 0): ('Water',),
@@ -55,13 +55,12 @@ class TiledMap(LevelData):
              (4, 6): ('Tank', '', 2),
              }
 
-    def __init__(self, data):
-        self.xmldata = etree.fromstring(data)
+    def __init__(self, path):
+        with open(path, 'rb') as lfile:
+            self.xmldata = etree.fromstring(lfile.read())
 
-        ltype = self.xmldata.find("*/property[@name='leveltype']").get('value')
-        self.leveltype = ltype.rstrip('Level') + 'Level'
-
-        self.title = self.xmldata.find("*/property[@name='title']").get('value')
+        self.properties = {prop.attrib['name']: prop.attrib['value']
+                           for prop in self.xmldata.findall('properties/property')}
 
 
     def get_data(self):

@@ -1,6 +1,6 @@
-class LevelData:
-    def __init__(self, data):
-        self.data = data
+class LevelFile:
+    def __init__(self):
+        self.properties = {}
 
 
     def get_data(self):

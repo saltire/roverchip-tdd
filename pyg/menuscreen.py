@@ -1,9 +1,12 @@
+import glob
+
 import pygame
 
 import config
 from font import Font
 from gamescreen import GameScreen
 from screen import Screen
+from roverchip.levelfiles.tiledmap import TiledMap
 
 
 class MenuScreen(Screen):
@@ -143,8 +146,7 @@ class MenuScreen(Screen):
 
 
 class MainMenuScreen(MenuScreen):
-    def __init__(self, leveldata):
-        self.leveldata = leveldata
+    def __init__(self):
         self.options = [('Play Game', 'play'),
                         ('Quit Game', 'quit'),
                         ]
@@ -153,7 +155,7 @@ class MainMenuScreen(MenuScreen):
 
     def play(self):
         """Open up a level menu with a list of all levels."""
-        self.window.run(LevelMenuScreen(self.leveldata))
+        self.window.run(LevelMenuScreen())
 
 
     def quit(self):
@@ -162,18 +164,25 @@ class MainMenuScreen(MenuScreen):
 
 
 class LevelMenuScreen(MenuScreen):
-    def __init__(self, leveldata):
-        self.leveldata = leveldata
-        self.options = [(ldata.title, 'level', i) for i, ldata in enumerate(leveldata)]
+    def __init__(self):
+        # instantiate level files based on extension
+        self.levelfiles = []
+        for lpath in glob.glob(config.levelpath):
+            if lpath[-4:] == '.tmx':
+                self.levelfiles.append(TiledMap(lpath))
+
+        # build options from level files
+        self.options = [(lfile.properties.get('title', 'Level {0}'.format(i + 1)), 'level', i)
+                        for i, lfile in enumerate(self.levelfiles)]
         MenuScreen.__init__(self)
 
 
     def level(self, i):
         """Run each level in sequence. If one returns false, repeat it.
         If passed a number, skip that many levels."""
-        for ldata in self.leveldata[i:]:
+        for lfile in self.levelfiles[i:]:
             while True:
-                status = self.window.run(GameScreen(ldata))
+                status = self.window.run(GameScreen(lfile))
                 if status == True: # success
                     break
                 if status == 'quit':

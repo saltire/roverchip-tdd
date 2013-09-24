@@ -11,7 +11,7 @@ class Test_Robot(unittest.TestCase):
                  [0, 0, 0],
                  [0, 0, 0]]
         ctypes = [('Floor',)]
-        self.level = Level(*MockDataFile(cells, ctypes).get_data())
+        self.level = Level(MockDataFile(cells, ctypes))
 
         self.robot = self.level.add_sprite('Robot', (1, 1))
 
