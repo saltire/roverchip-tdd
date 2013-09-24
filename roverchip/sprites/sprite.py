@@ -11,6 +11,7 @@ class Sprite:
 
         # defaults to override
         self.layer = 0              # layer the sprite is rendered on
+        self.priority = 0           # higher value means hooks are called sooner
         self.size = 1               # size of sprite in cells
         self.speed = 4              # cells moved per second
         self.tile_rotates = False   # tile rotates according to movement

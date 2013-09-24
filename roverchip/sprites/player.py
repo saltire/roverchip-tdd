@@ -6,6 +6,7 @@ class Player(Sprite):
         Sprite.__init__(self, level, (x, y))
 
         self.tile_rotates = True
+        self.priority = 1
         self.layer = 1
 
         self.carrying = set()               # sprites carried by the player

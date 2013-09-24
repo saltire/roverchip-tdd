@@ -1,3 +1,6 @@
+import operator
+
+
 class SpriteGroup(set):
     def __getattr__(self, attr):
         """Return all sprites in the group for which there is a flag
@@ -25,3 +28,13 @@ class SpriteGroup(set):
         return SpriteGroup(sprite for sprite in self if
                            any(x - 1 < sprite.pos[0] < x + 1 and y - 1 < sprite.pos[1] < y + 1
                                for x, y in positions))
+
+
+    def by_layer(self):
+        """Return a list of sprites sorted by increasing layer."""
+        return sorted(self, key=operator.attrgetter('layer'))
+
+
+    def by_priority(self):
+        """Return a list of sprites sorted by decreasing priority."""
+        return sorted(self, key=operator.attrgetter('priority'), reverse=True)

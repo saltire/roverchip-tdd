@@ -1,5 +1,3 @@
-import operator
-
 import pygame
 
 import config
@@ -78,7 +76,7 @@ class GameScreen(Screen):
         self.view.blit(self.background, (0, 0), (left, top, width, height))
 
         # blit sprites onto the view
-        for sprite in sorted(self.level.sprites.active, key=operator.attrgetter('layer')):
+        for sprite in self.level.sprites.active.by_layer():
             sx, sy = sprite.pos
             tile = self.renderer.render(sprite)
             if tile:
