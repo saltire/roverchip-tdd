@@ -15,7 +15,6 @@ class Dirt(Sprite):
             and not self.level.sprites.bridge.at(self.pos)):
             self.is_bridge = True
             self.is_movable = False
-            self.layer = -1
 
         # clear away mud when player steps on this cell
         if self.is_bridge and self.level.sprites['Player'].at(self.pos):

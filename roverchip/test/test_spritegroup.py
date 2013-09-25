@@ -54,13 +54,6 @@ class Test_SpriteGroup(unittest.TestCase):
                               [self.player, self.crate, self.rover])
 
 
-    def test_group_returns_list_sorted_by_increasing_layer(self):
-        self.rover.layer = 2
-        self.crate2.layer = -1
-        self.assertEqual(self.sprites.by_layer(),
-                         [self.crate2, self.crate, self.player, self.rover])
-
-
     def test_group_returns_list_sorted_by_decreasing_priority(self):
         self.rover.priority = 2
         self.crate2.priority = -1

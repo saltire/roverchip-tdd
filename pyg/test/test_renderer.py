@@ -30,7 +30,7 @@ class MockRenderer(Renderer):
         self.tiles['NormalCell'] = (0, 0)
 
 
-    def render_specialcell(self, cell):
+    def _render_specialcell(self, cell):
         return self.tileset.get_tile((1 + cell.offset, 1 + cell.offset),
                                      cell.rotate)
 

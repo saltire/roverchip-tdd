@@ -8,7 +8,6 @@ class Player(Sprite):
 
         self.tile_rotates = True
         self.priority = 1
-        self.layer = 1
 
         self.carrying = SpriteGroup()       # sprites carried by the player
         self.followers = SpriteGroup()      # sprites following the player

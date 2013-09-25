@@ -15,7 +15,6 @@ class Crate(Sprite):
             self.is_bridge = True
             self.is_movable = False
             self.is_solid = False
-            self.layer = -1
 
         cell = self.get_cell()
         if self.is_bridge and cell is not None:
