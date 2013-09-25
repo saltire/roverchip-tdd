@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="18" height="11" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="leveltype" value="ChipsChallenge"/>
+  <property name="title" value="Chips 2"/>
+ </properties>
+ <tileset firstgid="1" source="maptiles.tsx"/>
+ <layer name="Tile Layer 1" width="18" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NggAAmPJgUAFLPiAUPBnPQ2aRibOaAMDMUY3Mvsl2KOMRJNYca7qFW+GAzZ7DEOyXpGQBp8VrUGAMAAA==
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="18" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgoB3woaHZAw1CiFSHHgY8DAwJxJjlBsWBNHbPYAYD6VYALsdA1BgDAAA=
+  </data>
+ </layer>
+</map>

@@ -3,8 +3,8 @@ class Cell:
 
         # defaults to override
         self.rotate = 0                 # rotation of the tile
+        self.enemy_can_enter = True     # enemies can enter this cell
         self.player_can_enter = True    # player can enter this cell
-        self.robot_can_enter = True     # robots can enter this cell
         self.sprite_can_enter = True    # sprites can enter this cell
 
 

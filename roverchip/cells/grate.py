@@ -5,4 +5,4 @@ class Grate(Cell):
     def __init__(self):
         Cell.__init__(self)
 
-        self.robot_can_enter = False
+        self.enemy_can_enter = False

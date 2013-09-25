@@ -16,6 +16,6 @@ class Robot(Sprite):
         if not self.to_move:
             for turns in (1, 0, -1, -2):
                 new_dir = (self.rotate + (turns if self.follow_dir else -turns)) % 4
-                if self.level.robot_can_enter(self.get_pos_in_dir(new_dir)):
+                if self.level.enemy_can_enter(self.get_pos_in_dir(new_dir)):
                     self.start_move(new_dir)
                     break

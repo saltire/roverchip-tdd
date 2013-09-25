@@ -78,7 +78,7 @@ class Test_Level(unittest.TestCase):
 
 
     def test_robots_cant_enter_no_robot_cells_even_if_empty(self):
-        self.assertFalse(self.level.robot_can_enter((1, 0)))
+        self.assertFalse(self.level.enemy_can_enter((1, 0)))
 
 
     def test_player_can_enter_cells_with_movables(self):

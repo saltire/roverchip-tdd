@@ -70,28 +70,41 @@ class Level:
 
 
     def sprite_can_enter(self, (x, y)):
-        """Return true if cell exists, doesn't contain solid sprites,
-        and doesn't specify no sprites."""
-        return ((x, y) in self.cells
-                and not self.sprites.solid.on((x, y))
-                and self.cells[x, y].sprite_can_enter
-                )
+        """Return true if cell exists, doesn't disallow sprites,
+        and doesn't contain solid sprites."""
+        return bool((x, y) in self.cells
+                    and self.cells[x, y].sprite_can_enter
+                    and not self.sprites.solid.on((x, y))
+                    )
 
 
-    def robot_can_enter(self, (x, y)):
-        """Return true if sprites can enter the cell,
-        and it doesn't specify no robots."""
-        return (self.sprite_can_enter((x, y)) and self.cells[x, y].robot_can_enter)
+    def enemy_can_enter(self, (x, y)):
+        """Return true if cell exists, doesn't disallow enemies,
+        and doesn't contain solid sprites.
+        If the cell is water, it must contain a bridge."""
+        return bool((x, y) in self.cells
+                    and (self.cells[x, y].enemy_can_enter
+                         or (self.cells[x, y].get_type() == 'Water'
+                             and self.sprites.bridge.on((x, y))
+                             )
+                         )
+                    and not self.sprites.solid.on((x, y))
+                    )
 
 
     def player_can_enter(self, (x, y)):
-        """Return true if cell exists, doesn't contain solid immovable sprites
-        or solid sprites partially in the cell (except Rover), and doesn't specify no player.
-        If the cell is water, there must be a bridge sprite completely in it."""
-        return ((x, y) in self.cells
-                and (self.cells[x, y].player_can_enter
-                     or (self.cells[x, y].get_type() == 'Water'
-                         and self.sprites.bridge.on((x, y))))
-                and all((spr.is_movable and spr.get_cell()) or spr.get_type() == 'Rover'
-                        for spr in self.sprites.solid.on((x, y)))
-                )
+        """Return true if cell exists and doesn't disallow players.
+        Any solid sprites (except Rover) must be movable and entirely in the cell.
+        If the cell is water, it must contain a bridge."""
+        return bool((x, y) in self.cells
+                    and (self.cells[x, y].player_can_enter
+                         or (self.cells[x, y].get_type() == 'Water'
+                             and self.sprites.bridge.on((x, y))
+                             )
+                         )
+                    and all((sprite.is_movable and sprite.get_cell())
+                            or sprite.get_type() == 'Rover'
+                            or sprite.is_bridge
+                            for sprite in self.sprites.solid.on((x, y))
+                            )
+                    )

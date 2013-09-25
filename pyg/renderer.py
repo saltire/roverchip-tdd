@@ -37,6 +37,16 @@ class Renderer:
         return self.tileset.get_tile((3, 1) if crate.is_bridge else (2, 1))
 
 
+    def render_dirt(self, dirt):
+        """Return a dirt tile, a mud tile, or a regular floor tile."""
+        if not dirt.is_bridge:
+            return self.tileset.get_tile((8, 1)) # dirt
+        elif dirt.is_solid:
+            return self.tileset.get_tile((8, 0)) # mud
+        else:
+            return self.tileset.get_tile((0, 0)) # floor
+
+
     def render_door(self, door):
         """Return a door tile of the correct colour."""
         if door.is_solid:

@@ -39,5 +39,6 @@ class Test_Crate(unittest.TestCase):
 
 
     def test_player_can_enter_crate_cell_when_in_water(self):
+        self.assertFalse(self.level.player_can_enter((0, 0)))
         self.crate.start_turn()
         self.assertTrue(self.level.player_can_enter((0, 0)))
