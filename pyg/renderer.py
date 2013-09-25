@@ -1,13 +1,15 @@
 class Renderer:
-    tiles = {'Floor': (0, 0),
-             'Wall': (1, 0),
-             'Grate': (5, 0),
+    tiles = {
              'Exit': (6, 0),
+             'Floor': (0, 0),
+             'Grate': (5, 0),
+             'Wall': (1, 0),
 
-             'Player': (0, 2),
-             'Rover': (1, 2),
-             'Robot': (3, 2),
+             'Chip': (7, 2),
              'Crate': (2, 1),
+             'Player': (0, 2),
+             'Robot': (3, 2),
+             'Rover': (1, 2),
              }
 
     def __init__(self, tileset):
@@ -20,6 +22,14 @@ class Renderer:
         methodname = 'render_{0}'.format(obj.get_type().lower())
         return (getattr(self, methodname)(obj) if hasattr(self, methodname)
                 else self.tileset.get_tile(self.tiles[obj.get_type()], obj.rotate))
+
+
+    def render_chipdoor(self, chipdoor):
+        """Return a tile of the correct rotation."""
+        if chipdoor.is_solid:
+            return self.tileset.get_tile((7, 4) if chipdoor.rotate % 2 else (7, 3))
+        else:
+            return None
 
 
     def render_crate(self, crate):

@@ -12,6 +12,8 @@ class SpriteGroup(set):
     def __getitem__(self, types):
         """Return all sprites in the group of the given type(s).
         If passed None, return all sprites."""
+        if isinstance(types, basestring):
+            types = (types,)
         return SpriteGroup(sprite for sprite in self
                            if types is None or sprite.get_type() in types)
 

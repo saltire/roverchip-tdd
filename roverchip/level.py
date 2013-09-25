@@ -1,10 +1,11 @@
+import config
 from cells import celltypes
 from spritegroup import SpriteGroup
 from sprites import spritetypes
 
 
 class Level:
-    def __init__(self, levelfile, animation=True):
+    def __init__(self, levelfile):
         celldata, spritedata = levelfile.get_data()
 
         self.cells = {}
@@ -20,7 +21,12 @@ class Level:
             spritetype, (x, y), args = sprite[0], sprite[1], sprite[2:]
             self.add_sprite(spritetype, (x, y), *args)
 
-        self.animation = animation
+        self.animation = config.animation
+
+
+    def get_type(self):
+        """Return the type of the level, i.e. the class name."""
+        return self.__class__.__name__
 
 
     def add_sprite(self, spritetype, (x, y), *args):

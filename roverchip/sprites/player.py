@@ -1,4 +1,5 @@
 from roverchip.sprite import Sprite
+from roverchip.spritegroup import SpriteGroup
 
 
 class Player(Sprite):
@@ -9,9 +10,9 @@ class Player(Sprite):
         self.priority = 1
         self.layer = 1
 
-        self.carrying = set()               # sprites carried by the player
-        self.followers = set()              # sprites following the player
-        self.pushing = set()                # sprites being pushed
+        self.carrying = SpriteGroup()       # sprites carried by the player
+        self.followers = SpriteGroup()      # sprites following the player
+        self.pushing = SpriteGroup()        # sprites being pushed
         self.move_key_queue = []            # current move key being pressed
 
 
@@ -50,13 +51,20 @@ class Player(Sprite):
 
         nextpos = self.get_pos_in_dir(direction)
 
+        # open locked door and remove key if possible
         for door in self.level.sprites['Door'].solid.on(nextpos):
-            for key in self.level.sprites['Key']:
-                if key in self.carrying and key.colour == door.colour:
+            for key in self.carrying['Key'].active:
+                if key.colour == door.colour:
                     door.is_solid = False
                     key.is_active = False
-                    self.carrying.discard(key)
+                    self.carrying.remove(key)
                     break
+
+        # open chip door if chip quota met or unset
+        for chipdoor in self.level.sprites['ChipDoor'].solid.on(nextpos):
+            chipquota = getattr(self.level, 'chipquota', 0)
+            if len(self.carrying['Chip']) >= chipquota:
+                chipdoor.is_solid = False
 
         if self.level.player_can_enter(nextpos):
             movables = self.level.sprites.movable.at(nextpos)
@@ -87,7 +95,7 @@ class Player(Sprite):
         """Pick up items in this cell, and start adjacent Rovers following."""
         self.pushing.clear()
 
-        for item in self.level.sprites.item.on(self.pos):
+        for item in self.level.sprites.active.item.on(self.pos):
             if item not in self.carrying:
                 self.carrying.add(item)
 

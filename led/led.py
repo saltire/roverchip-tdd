@@ -2,6 +2,7 @@ import sys
 
 import pygame
 
+import config
 from arduino import Arduino
 from roverchip.levels import leveltypes
 
@@ -27,8 +28,8 @@ class LED:
 
 
     def run_level(self, levelfile):
-        celldata, spritedata = levelfile.get_data()
-        level = gametypes[levelfile.gametype](celldata, spritedata, False)
+        config.animation = False
+        level = leveltypes[levelfile.gametype](levelfile)
 
         w, h = self.size
         ox, oy = (w - level.width) / 2, (h - level.height) / 2

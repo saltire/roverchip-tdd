@@ -5,7 +5,7 @@ from roverchip.level import Level
 from roverchip.test.test_level import MockDataFile
 
 
-class TestCrate(unittest.TestCase):
+class Test_Crate(unittest.TestCase):
     def setUp(self):
         cells = [[1, 1],
                  [1, 4]

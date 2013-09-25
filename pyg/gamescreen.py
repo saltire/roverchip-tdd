@@ -9,8 +9,7 @@ from roverchip.levels import leveltypes
 
 class GameScreen(Screen):
     def __init__(self, levelfile):
-        self.level = (leveltypes[levelfile.properties.get('leveltype', 'Level')]
-                      (levelfile, config.animation))
+        self.level = leveltypes[levelfile.properties.get('leveltype', 'Level')](levelfile)
         self.tileset = Tileset(config.tilepath, config.tilesize)
         self.renderer = Renderer(self.tileset)
 

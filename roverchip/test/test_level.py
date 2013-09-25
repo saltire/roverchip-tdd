@@ -6,6 +6,8 @@ from roverchip.level import Level
 
 class MockDataFile(LevelFile):
     def __init__(self, cells, ctypes, sprites=[]):
+        self.properties = {}
+
         self.celldata = {}
         for y, row in enumerate(cells):
             for x, cell in enumerate(row):

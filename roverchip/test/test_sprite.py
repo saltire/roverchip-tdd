@@ -1,5 +1,6 @@
 import unittest
 
+import config
 from roverchip.level import Level
 
 from roverchip.test.test_level import MockDataFile
@@ -13,11 +14,13 @@ class Test_Sprite(unittest.TestCase):
         ctypes = [('Floor',), ('Wall',)]
         levelfile = MockDataFile(cells, ctypes)
 
+        config.animation = True
         self.level = Level(levelfile)
         self.sprite = self.level.add_sprite('Sprite', (1, 2))
         self.celltime = 1000 / self.sprite.speed  # time to move 1 cell
 
-        self.level_noanim = Level(levelfile, False)
+        config.animation = False
+        self.level_noanim = Level(levelfile)
         self.sprite_noanim = self.level_noanim.add_sprite('Sprite', (1, 2))
         self.celltime_noanim = 1000 / self.sprite.speed  # time to move 1 cell
 

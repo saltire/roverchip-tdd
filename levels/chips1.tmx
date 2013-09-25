@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="15" height="14" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="leveltype" value="ChipsChallenge"/>
+  <property name="title" value="Chips 1"/>
+ </properties>
+ <tileset firstgid="1" source="../roverchip/levelfiles/maptiles.tsx"/>
+ <layer name="background" width="15" height="14">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NggAAmLBifODIAiTEiYWS16OLE6FUkoBebmxhx0LjUkopx+QeXWlzhQcgdxKgl1V5K/EtMWJOaRtDZhMBA6iXWfwD1cpNcSAMAAA==
+  </data>
+ </layer>
+ <layer name="sprites" width="15" height="14">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgGBzAh0RxdMABpXnQ+LiAF5TmZmBYgE2eEyruhUUO2U3eaHKeONRhAzD5QBLVU2IvJ5J/kdXhCgdsgAuNphfwQaNJAR5oNLUBAIN5bPdIAwAA
+  </data>
+ </layer>
+</map>

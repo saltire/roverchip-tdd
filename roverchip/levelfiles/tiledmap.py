@@ -10,7 +10,8 @@ from levelfile import LevelFile
 
 
 class TiledMap(LevelFile):
-    tiles = {(0, 0): ('Floor',),
+    tiles = {
+             (0, 0): ('Floor',),
              (1, 0): ('Wall',),
              (2, 0): ('Water',),
              (3, 0): ('Conveyor', ''),
