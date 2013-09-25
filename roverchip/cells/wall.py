@@ -1,4 +1,4 @@
-from cell import Cell
+from roverchip.cell import Cell
 
 
 class Wall(Cell):

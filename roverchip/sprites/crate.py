@@ -1,4 +1,4 @@
-from sprite import Sprite
+from roverchip.sprite import Sprite
 
 
 class Crate(Sprite):
