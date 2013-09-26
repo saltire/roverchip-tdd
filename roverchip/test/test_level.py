@@ -39,11 +39,11 @@ class Test_Level(unittest.TestCase):
         for (x, y), celltype in [((0, 0), 'Grate'),
                                  ((1, 1), 'Floor')
                                  ]:
-            self.assertEqual(self.level.cells[x, y].get_type(), celltype)
+            self.assertEqual(self.level.cells[x, y].type, celltype)
 
 
     def test_level_has_correct_sprite_types(self):
-        classes = [sprite.get_type() for sprite in self.level.sprites]
+        classes = [sprite.type for sprite in self.level.sprites]
         self.assertItemsEqual(classes, ['Player', 'Crate'])
 
 

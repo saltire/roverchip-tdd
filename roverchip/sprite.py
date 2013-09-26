@@ -1,5 +1,8 @@
 class Sprite:
     def __init__(self, level, (x, y), rotate=0):
+        self.type = self.__class__.__name__
+        self.types = set(base.__name__ for base in self.__class__.__bases__) | set((self.type,))
+
         self.level = level
 
         # initial values
@@ -22,11 +25,6 @@ class Sprite:
         self.is_solid = False       # blocks sprites from entering
 
 
-    def get_type(self):
-        """Return the type of the sprite, i.e. the class name."""
-        return self.__class__.__name__
-
-
     def get_cell(self):
         """If the sprite is completely inside a cell, return the cell."""
         return self.level.cells.get(self.pos, None)
@@ -35,7 +33,7 @@ class Sprite:
     def get_cell_type(self):
         """If the sprite is completely inside a cell, return the cell type."""
         cell = self.get_cell()
-        return cell.get_type() if cell is not None else None
+        return cell.type if cell is not None else None
 
 
     def get_pos_in_dir(self, direction, distance=1):

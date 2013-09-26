@@ -50,20 +50,8 @@ class Player(Sprite):
 
         nextpos = self.get_pos_in_dir(direction)
 
-        # open locked door and remove key if possible
         for door in self.level.sprites['Door'].solid.on(nextpos):
-            for key in self.carrying['Key'].active:
-                if key.colour == door.colour:
-                    door.is_solid = False
-                    key.is_active = False
-                    self.carrying.remove(key)
-                    break
-
-        # open chip door if chip quota met or unset
-        for chipdoor in self.level.sprites['ChipDoor'].solid.on(nextpos):
-            chipquota = getattr(self.level, 'chipquota', 0)
-            if len(self.carrying['Chip']) >= chipquota:
-                chipdoor.is_solid = False
+            door.attempt_open(self)
 
         if self.level.player_can_enter(nextpos):
             movables = self.level.sprites.movable.at(nextpos)
@@ -100,7 +88,7 @@ class Player(Sprite):
 
         for sprite in self.level.sprites.on(*[self.get_pos_in_dir(direction)
                                               for direction in range(4)]):
-            if sprite.get_type() == 'Rover' and sprite not in self.followers:
+            if sprite.type == 'Rover' and sprite not in self.followers:
                 self.followers.add(sprite)
 
 

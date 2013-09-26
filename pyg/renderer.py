@@ -25,17 +25,17 @@ class Renderer:
     def render(self, obj):
         """Return the tile corresponding to the cell/sprite type,
         or find it according to special instructions if they exist."""
-        tilemethod = '_render_' + obj.get_type().lower()
+        tilemethod = '_render_' + obj.type.lower()
         return (getattr(self, tilemethod)(obj) if hasattr(self, tilemethod)
-                else self.tileset.get_tile(self.tiles[obj.get_type()], obj.rotate))
+                else self.tileset.get_tile(self.tiles[obj.type], obj.rotate))
 
 
     def get_layer(self, sprite):
         """Return the layer of the corresponding sprite,
         or find it according to special instructions if they exist."""
-        layermethod = '_layer_' + sprite.get_type().lower()
+        layermethod = '_layer_' + sprite.type.lower()
         return (getattr(self, layermethod)(sprite) if hasattr(self, layermethod)
-                else self.layers.get(sprite.get_type(), 0))
+                else self.layers.get(sprite.type, 0))
 
 
     def _layer_crate(self, crate):
@@ -71,17 +71,17 @@ class Renderer:
             return self.tileset.get_tile((0, 0)) # floor
 
 
-    def _render_door(self, door):
-        """Return a door tile of the correct colour."""
-        if door.is_solid:
-            return self.tileset.get_tile((5, 2 + door.colour), door.rotate)
-        else:
-            return None
-
-
     def _render_key(self, key):
         """Return a key tile of the correct colour."""
         return self.tileset.get_tile((6, 2 + key.colour))
+
+
+    def _render_keydoor(self, keydoor):
+        """Return a door tile of the correct colour."""
+        if keydoor.is_solid:
+            return self.tileset.get_tile((5, 2 + keydoor.colour), keydoor.rotate)
+        else:
+            return None
 
 
     def _render_water(self, water):

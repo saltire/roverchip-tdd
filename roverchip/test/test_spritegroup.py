@@ -22,9 +22,15 @@ class Test_SpriteGroup(unittest.TestCase):
         self.assertItemsEqual(self.sprites.active, [self.player, self.crate, self.crate2])
 
 
-    def test_get_item_syntax_returns_sprites_with_certain_type(self):
+    def test_get_item_syntax_returns_sprites_by_type(self):
         self.assertItemsEqual(self.sprites['Crate'], [self.crate, self.crate2])
         self.assertItemsEqual(self.sprites['Rover', 'Player'], [self.rover, self.player])
+
+
+    def test_get_item_syntax_returns_sprites_by_mixin(self):
+        keydoor = self.level.add_sprite('KeyDoor', (0, 0))
+        chipdoor = self.level.add_sprite('ChipDoor', (0, 0))
+        self.assertItemsEqual(self.sprites['Door'], [keydoor, chipdoor])
 
 
     def test_get_item_syntax_doesnt_filter_if_passed_none(self):

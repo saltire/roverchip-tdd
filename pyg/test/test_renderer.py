@@ -11,24 +11,18 @@ class MockTileset:
 class NormalCell:
     def __init__(self):
         self.rotate = 1
-
-
-    def get_type(self):
-        return self.__class__.__name__
+        self.type = 'NormalCell'
 
 
 class SpecialCell(NormalCell):
     def __init__(self):
         self.rotate = 1
         self.offset = 2
+        self.type = 'SpecialCell'
 
 
 class MockRenderer(Renderer):
-    def __init__(self, tileset):
-        Renderer.__init__(self, tileset)
-
-        self.tiles['NormalCell'] = (0, 0)
-
+    tiles = {'NormalCell': (0, 0)}
 
     def _render_specialcell(self, cell):
         return self.tileset.get_tile((1 + cell.offset, 1 + cell.offset),

@@ -24,11 +24,6 @@ class Level:
         self.animation = config.animation
 
 
-    def get_type(self):
-        """Return the type of the level, i.e. the class name."""
-        return self.__class__.__name__
-
-
     def add_sprite(self, spritetype, (x, y), *args):
         """Given a sprite type and position, add the sprite."""
         spr = spritetypes[spritetype](self, (x, y), *args)
@@ -66,7 +61,7 @@ class Level:
     def get_cell_type(self, (x, y)):
         """If a cell exists at the given position, return its type."""
         cell = self.cells.get((x, y), None)
-        return cell.get_type() if cell is not None else None
+        return cell.type if cell is not None else None
 
 
     def sprite_can_enter(self, (x, y)):
@@ -84,7 +79,7 @@ class Level:
         If the cell is water, it must contain a bridge."""
         return bool((x, y) in self.cells
                     and (self.cells[x, y].enemy_can_enter
-                         or (self.cells[x, y].get_type() == 'Water'
+                         or (self.cells[x, y].type == 'Water'
                              and self.sprites.bridge.on((x, y))
                              )
                          )
@@ -98,12 +93,12 @@ class Level:
         If the cell is water, it must contain a bridge."""
         return bool((x, y) in self.cells
                     and (self.cells[x, y].player_can_enter
-                         or (self.cells[x, y].get_type() == 'Water'
+                         or (self.cells[x, y].type == 'Water'
                              and self.sprites.bridge.on((x, y))
                              )
                          )
                     and all((sprite.is_movable and sprite.get_cell())
-                            or sprite.get_type() == 'Rover'
+                            or sprite.type == 'Rover'
                             or sprite.is_bridge
                             for sprite in self.sprites.solid.on((x, y))
                             )

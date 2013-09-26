@@ -15,7 +15,7 @@ class SpriteGroup(set):
         if isinstance(types, basestring):
             types = (types,)
         return SpriteGroup(sprite for sprite in self
-                           if types is None or sprite.get_type() in types)
+                           if types is None or sprite.types & set(types))
 
 
     def at(self, *positions):
