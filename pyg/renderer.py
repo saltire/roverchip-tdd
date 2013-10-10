@@ -8,14 +8,17 @@ class Renderer:
 
              'Chip': (7, 2),
              'Crate': (2, 1),
+             'Laser': (4, 1),
              'Mirror': (7, 1),
              'Player': (0, 2),
              'Robot': (3, 2),
              'Rover': (1, 2),
+             'Shooter': (2, 2),
              }
 
     layers = {
               'Key': 2,
+              'Laserbeam':-1,
               'Player': 1,
               'Rover': 1,
               }
@@ -84,6 +87,15 @@ class Renderer:
             return self.tileset.get_tile((5, 2 + keydoor.colour), keydoor.rotate)
         else:
             return None
+
+
+    def _render_laserbeam(self, beam):
+        """Return a rotated laser tile, bending in the correct direction if necessary."""
+        if beam.exit_dir == beam.rotate:
+            return self.tileset.get_tile((5, 1), beam.rotate)
+        else:
+            rotate_mod = 0 if (beam.exit_dir - beam.rotate) % 4 == 1 else 1
+            return self.tileset.get_tile((6, 1), (beam.rotate + rotate_mod) % 4)
 
 
     def _render_water(self, water):

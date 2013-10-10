@@ -3,6 +3,7 @@ from roverchip.sprite import Sprite
 
 class Robot(Sprite):
     tile_rotates = True
+    is_destructible = True
     is_enemy = True
     is_solid = True
 

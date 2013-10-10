@@ -6,6 +6,7 @@ class Sprite:
     tile_rotates = False    # tile rotates according to movement
     is_active = True        # whether the sprite is in the game
     is_bridge = False       # allows the player to cross water
+    is_destructible = False # can be destroyed by laser beams
     is_enemy = False        # kills the player on touch
     is_item = False         # can be picked up by player
     is_movable = False      # can be pushed by player
@@ -39,11 +40,7 @@ class Sprite:
     def get_pos_in_dir(self, direction, distance=1):
         """Given a direction and an optional distance, give the position
         after travelling that distance in that direction."""
-        x, y = self.pos
-        distance *= -1 if direction in [0, 3] else 1  # negative if N or W
-        # round to avoid floating-point errors
-        return ((round(x + distance, 5), y) if direction % 2 else
-                (x, round(y + distance, 5)))
+        return self.level.get_pos_in_dir(self.pos, direction, distance)
 
 
     def get_dir_of_pos(self, (dx, dy)):

@@ -5,6 +5,7 @@ from roverchip.spritegroup import SpriteGroup
 class Player(Sprite):
     priority = 1
     tile_rotates = True
+    is_destructible = True
 
     def __init__(self, level, (x, y)):
         Sprite.__init__(self, level, (x, y))

@@ -58,6 +58,15 @@ class Level:
         pass
 
 
+    def get_pos_in_dir(self, (x, y), direction, distance=1):
+        """Given a position, a direction and an optional distance,
+        give the position after travelling that distance in that direction."""
+        distance *= -1 if direction in [0, 3] else 1  # negative if N or W
+        # round to avoid floating-point errors
+        return ((round(x + distance, 5), y) if direction % 2 else
+                (x, round(y + distance, 5)))
+
+
     def get_cell_type(self, (x, y)):
         """If a cell exists at the given position, return its type."""
         cell = self.cells.get((x, y), None)
@@ -75,7 +84,7 @@ class Level:
 
     def enemy_can_enter(self, (x, y)):
         """Return true if cell exists, doesn't disallow enemies,
-        and doesn't contain solid sprites.
+        and doesn't contain solid sprites or Rover.
         If the cell is water, it must contain a bridge."""
         return bool((x, y) in self.cells
                     and (self.cells[x, y].enemy_can_enter
