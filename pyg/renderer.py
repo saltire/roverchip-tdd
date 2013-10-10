@@ -1,12 +1,14 @@
 class Renderer:
     tiles = {
              'Exit': (6, 0),
+             'Fire': (2, 0),
              'Floor': (0, 0),
              'Grate': (5, 0),
              'Wall': (1, 0),
 
              'Chip': (7, 2),
              'Crate': (2, 1),
+             'Mirror': (7, 1),
              'Player': (0, 2),
              'Robot': (3, 2),
              'Rover': (1, 2),

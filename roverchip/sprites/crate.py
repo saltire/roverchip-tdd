@@ -1,13 +1,9 @@
 from roverchip.sprite import Sprite
+from roverchip.sprites.mixins.movable import Movable
 
 
-class Crate(Sprite):
-    def __init__(self, level, (x, y)):
-        Sprite.__init__(self, level, (x, y))
-
-        self.is_movable = True
-        self.is_solid = True
-
+class Crate(Movable, Sprite):
+    is_solid = True
 
     def start_turn(self):
         if not self.is_bridge and self.get_cell_type() == 'Water':

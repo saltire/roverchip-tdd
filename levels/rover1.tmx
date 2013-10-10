@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="24" height="11" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="leveltype" value="RescueRover"/>
+  <property name="title" value="Rover 1"/>
+ </properties>
+ <tileset firstgid="1" source="../roverchip/levelfiles/maptiles.tsx"/>
+ <layer name="Tile Layer 1" width="24" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NiYGBgojFmpBFGNp8W7kQ3XwgJk+ovWptPTPjAzCbXLELmE1JPDfNpGf6UYvSwhYkrUiEu8cUvLTEAmdsApiAEAAA=
+  </data>
+ </layer>
+ <layer name="Tile Layer 2" width="24" height="11">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgGAXowJWB4cBAuwEGgG5ZMNBuGCwgiEL9nlRxBX7gikUskA720goAAIR8N/kgBAAA
+  </data>
+ </layer>
+</map>

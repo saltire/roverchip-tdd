@@ -2,12 +2,12 @@ from roverchip.sprite import Sprite
 
 
 class Robot(Sprite):
+    tile_rotates = True
+    is_enemy = True
+    is_solid = True
+
     def __init__(self, level, (x, y), rotate=0, follow_dir=0):
         Sprite.__init__(self, level, (x, y), rotate)
-
-        self.tile_rotates = True
-        self.is_enemy = True
-        self.is_solid = True
 
         self.follow_dir = follow_dir  # 0 to follow left wall, 1 to follow right wall
 

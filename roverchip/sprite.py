@@ -1,7 +1,19 @@
 class Sprite:
+    # default properties to override
+    priority = 0            # higher value means hooks are called sooner
+    size = 1                # size of sprite in cells
+    speed = 4               # cells moved per second
+    tile_rotates = False    # tile rotates according to movement
+    is_active = True        # whether the sprite is in the game
+    is_bridge = False       # allows the player to cross water
+    is_enemy = False        # kills the player on touch
+    is_item = False         # can be picked up by player
+    is_movable = False      # can be pushed by player
+    is_solid = False        # blocks sprites from entering
+
     def __init__(self, level, (x, y), rotate=0):
         self.type = self.__class__.__name__
-        self.types = set(base.__name__ for base in self.__class__.__bases__) | set((self.type,))
+        self.types = set(base.__name__ for base in self.__class__.__bases__) | set([self.type])
 
         self.level = level
 
@@ -11,18 +23,6 @@ class Sprite:
         self.to_move = 0            # distance left to move
         self.move_dir = 0           # direction sprite is moving
         self.delay_left = 0         # time before sprite can move again
-
-        # defaults to override
-        self.priority = 0           # higher value means hooks are called sooner
-        self.size = 1               # size of sprite in cells
-        self.speed = 4              # cells moved per second
-        self.tile_rotates = False   # tile rotates according to movement
-        self.is_active = True       # whether the sprite is in the game
-        self.is_bridge = False      # allows the player to cross water
-        self.is_enemy = False       # kills the player on touch
-        self.is_item = False        # can be picked up by player
-        self.is_movable = False     # can be pushed by player
-        self.is_solid = False       # blocks sprites from entering
 
 
     def get_cell(self):

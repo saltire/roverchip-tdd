@@ -3,11 +3,11 @@ from roverchip.spritegroup import SpriteGroup
 
 
 class Player(Sprite):
+    priority = 1
+    tile_rotates = True
+
     def __init__(self, level, (x, y)):
         Sprite.__init__(self, level, (x, y))
-
-        self.tile_rotates = True
-        self.priority = 1
 
         self.carrying = SpriteGroup()       # sprites carried by the player
         self.followers = SpriteGroup()      # sprites following the player
@@ -58,6 +58,8 @@ class Player(Sprite):
             # proceed only if no movables or movables can be pushed
             if (not movables or self.level.sprite_can_enter(self.get_pos_in_dir(direction, 2))):
                 self.pushing |= movables
+                for item in self.pushing:
+                    item.move_dir = direction
                 self.start_move(direction)
 
 
@@ -80,6 +82,8 @@ class Player(Sprite):
 
     def after_move(self):
         """Pick up items in this cell, and start adjacent Rovers following."""
+        for item in self.pushing:
+            item.after_move()
         self.pushing.clear()
 
         for item in self.level.sprites.active.item.on(self.pos):
