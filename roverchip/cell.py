@@ -6,6 +6,7 @@ class Cell:
 
     def __init__(self):
         self.type = self.__class__.__name__
+        self.types = set(base.__name__ for base in self.__class__.__bases__) | set([self.type])
 
         # initial values
         self.rotate = 0         # rotation of the tile

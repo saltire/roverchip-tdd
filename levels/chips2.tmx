@@ -4,7 +4,7 @@
   <property name="leveltype" value="ChipsChallenge"/>
   <property name="title" value="Chips 2"/>
  </properties>
- <tileset firstgid="1" source="maptiles.tsx"/>
+ <tileset firstgid="1" source="../roverchip/levelfiles/maptiles.tsx"/>
  <layer name="Tile Layer 1" width="18" height="11">
   <data encoding="base64" compression="gzip">
    H4sIAAAAAAAAA2NggAAmPJgUAFLPiAUPBnPQ2aRibOaAMDMUY3Mvsl2KOMRJNYca7qFW+GAzZ7DEOyXpGQBp8VrUGAMAAA==

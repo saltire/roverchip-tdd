@@ -1,3 +1,6 @@
+from roverchip.sprite import Sprite
+
+
 class Movable:
     is_movable = True
 
@@ -6,3 +9,5 @@ class Movable:
         if (self.get_cell_type() == 'Fire'
             and self.level.sprite_can_enter(self.get_pos_in_dir(self.move_dir))):
             self.to_move = 1
+
+        Sprite.after_move(self)

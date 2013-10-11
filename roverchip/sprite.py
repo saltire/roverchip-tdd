@@ -94,6 +94,9 @@ class Sprite:
 
     def after_move(self):
         """This hook is called after a sprite arrives in a new cell."""
+        cell = self.get_cell()
+        if 'Button' in getattr(cell, 'types', []):
+            cell.trigger(self)
 
 
     def end_turn(self):

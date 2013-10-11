@@ -96,6 +96,8 @@ class Player(Sprite):
             if sprite.type == 'Rover' and sprite not in self.followers:
                 self.followers.add(sprite)
 
+        Sprite.after_move(self)
+
 
     def end_turn(self):
         """Kill the player if it is overlapping any enemies."""

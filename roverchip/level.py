@@ -41,9 +41,10 @@ class Level:
         # call sprite hooks
         for sprite in self.sprites.active.by_priority():
             sprite.start_turn()
-            sprite.do_move(elapsed)
-            if sprite.get_cell():
-                sprite.after_move()
+            if sprite.to_move:
+                sprite.do_move(elapsed)
+                if sprite.get_cell():
+                    sprite.after_move()
         for sprite in self.sprites.active:
             sprite.end_turn()
 

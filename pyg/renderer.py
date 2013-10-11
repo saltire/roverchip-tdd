@@ -13,10 +13,14 @@ class Renderer:
              'Player': (0, 2),
              'Robot': (3, 2),
              'Rover': (1, 2),
+             'Sentry': (3, 3),
+             'SentryButton': (9, 3),
              'Shooter': (2, 2),
+             'ToggleButton': (9, 2),
              }
 
     layers = {
+              'Chip':-1,
               'Key': 2,
               'Laserbeam':-1,
               'Player': 1,
@@ -96,6 +100,18 @@ class Renderer:
         else:
             rotate_mod = 0 if (beam.exit_dir - beam.rotate) % 4 == 1 else 1
             return self.tileset.get_tile((6, 1), (beam.rotate + rotate_mod) % 4)
+
+
+    def _render_toggle(self, toggle):
+        """If the toggle is solid, return a toggle outline superimposed a wall tile;
+        otherwise just return a toggle outline."""
+        toggle_tile = self.tileset.get_tile((11, 0))
+        if toggle.is_solid:
+            wall_tile = self.tileset.get_tile((1, 0)).copy()
+            wall_tile.blit(toggle_tile, (0, 0))
+            return wall_tile
+        else:
+            return toggle_tile
 
 
     def _render_water(self, water):
