@@ -10,6 +10,8 @@ from roverchip.levels import leveltypes
 class GameScreen(Screen):
     def __init__(self, levelfile):
         self.level = leveltypes[levelfile.properties.get('leveltype', 'Level')](levelfile)
+        self.player = self.level.sprites['Player'].pop()
+
         self.tileset = Tileset(config.tilepath, config.tilesize)
         self.renderer = Renderer(self.tileset)
 
@@ -35,7 +37,9 @@ class GameScreen(Screen):
     def _get_cell_size(self, (ww, wh), (vw, vh)):
         """Given a window size in pixels, and a view size in cells,
         return the largest cell size that will fit the view in the window."""
-        return min(ww / vw, wh / vh)
+        tw, th = self.tileset.dims
+        # divide and multiply by tile size, to force cell size to be an exact multiple
+        return min(ww / vw / tw * tw, wh / vh / th * th)
 
 
     def _get_view_rect(self, (ww, wh), (vw, vh)):
@@ -60,7 +64,7 @@ class GameScreen(Screen):
             self.redraw = False
 
         # find offset that places the player in the centre
-        px, py = self.level.sprites['Player'].pop().pos
+        px, py = self.player.pos
         vw, vh = self.viewcells
         ox = px - (vw - 1) / 2.0
         oy = py - (vh - 1) / 2.0
