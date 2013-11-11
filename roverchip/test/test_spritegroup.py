@@ -18,8 +18,11 @@ class Test_SpriteGroup(unittest.TestCase):
 
 
     def test_flag_attribute_returns_sprites_for_which_flag_is_true(self):
-        self.rover.is_active = False
-        self.assertItemsEqual(self.sprites.active, [self.player, self.crate, self.crate2])
+        self.assertItemsEqual(self.sprites.solid, [self.rover, self.crate, self.crate2])
+
+
+    def test_not_flag_attribute_returns_sprites_for_which_flag_is_false(self):
+        self.assertItemsEqual(self.sprites.not_solid, [self.player])
 
 
     def test_get_item_syntax_returns_sprites_by_type(self):
@@ -38,9 +41,8 @@ class Test_SpriteGroup(unittest.TestCase):
 
 
     def test_methods_can_be_chained(self):
-        self.rover.is_active = False
-        self.assertItemsEqual(self.sprites['Player', 'Rover'].active, [self.player])
-        self.assertItemsEqual(self.sprites.active['Player', 'Rover'], [self.player])
+        self.assertItemsEqual(self.sprites['Player', 'Rover'].solid, [self.rover])
+        self.assertItemsEqual(self.sprites.solid['Player', 'Rover'], [self.rover])
 
 
     def test_at_method_filters_sprites_by_position(self):
@@ -65,3 +67,11 @@ class Test_SpriteGroup(unittest.TestCase):
         self.crate2.priority = -1
         self.assertEqual(self.sprites.by_priority(),
                          [self.rover, self.player, self.crate, self.crate2])
+
+
+    def test_sprite_subgroup_returns_only_sprites_in_parent(self):
+        subgroup = self.sprites.subset([self.player, self.rover])
+        self.sprites.discard(self.rover)
+        self.assertItemsEqual(subgroup, [self.player])
+        self.assertNotIn(self.rover, subgroup)
+

@@ -18,5 +18,5 @@ class Shooter(Sprite):
                             for sprite in self.level.sprites.solid.on(pos))):
                 break
             for sprite in self.level.sprites['Player', 'Rover'].at(pos):
-                sprite.is_active = False
+                sprite.destroy()
             distance += 1

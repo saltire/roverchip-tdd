@@ -62,7 +62,7 @@ class Test_ChipsChallenge(unittest.TestCase):
         self.assertTrue(self.level.check_for_success())
 
 
-    def test_level_fails_if_player_not_active(self):
+    def test_level_fails_if_player_destroyed(self):
         self.assertFalse(self.level.check_for_failure())
-        self.player.is_active = False
+        self.player.destroy()
         self.assertTrue(self.level.check_for_failure())

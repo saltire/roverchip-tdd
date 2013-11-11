@@ -68,5 +68,4 @@ class Test_Robot(unittest.TestCase):
     def test_robot_kills_player_on_entering_players_cell(self):
         player = self.level.add_sprite('Player', (0, 1))
         self.level.update_level([], 1)
-        self.assertFalse(player.is_active)
-
+        self.assertNotIn(player, self.level.sprites)

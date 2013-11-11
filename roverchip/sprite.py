@@ -4,7 +4,6 @@ class Sprite:
     size = 1                # size of sprite in cells
     speed = 4               # cells moved per second
     tile_rotates = False    # tile rotates according to movement
-    is_active = True        # whether the sprite is in the game
     is_bridge = False       # allows the player to cross water
     is_destructible = False # can be destroyed by laser beams
     is_enemy = False        # kills the player on touch
@@ -63,6 +62,11 @@ class Sprite:
         self.move_dir = direction
         if self.tile_rotates:
             self.rotate = direction
+
+
+    def destroy(self):
+        """Remove this sprite from the level."""
+        self.level.sprites.discard(self)
 
 
     def start_turn(self):

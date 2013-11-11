@@ -24,7 +24,7 @@ class Test_KeyDoor(unittest.TestCase):
 
     def test_key_disappears_after_use(self):
         self.player.attempt_move(1)
-        self.assertFalse(self.key.is_active)
+        self.assertNotIn(self.key, self.level.sprites)
 
 
     def test_keydoors_use_only_one_key_if_multiple_carried(self):
@@ -45,4 +45,4 @@ class Test_KeyDoor(unittest.TestCase):
         self.key.colour = 1
         self.player.attempt_move(1)
         self.assertTrue(self.keydoor.is_solid)
-        self.assertTrue(self.key.is_active)
+        self.assertIn(self.key, self.level.sprites)

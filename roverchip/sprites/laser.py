@@ -54,7 +54,7 @@ class Laser(Sprite):
 
             # kill destructible sprites in this cell
             for sprite in self.level.sprites.destructible.on(pos):
-                sprite.is_active = False
+                sprite.destroy()
 
             direction = exit_dir
 

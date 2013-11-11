@@ -18,36 +18,36 @@ class Test_Shooter(unittest.TestCase):
 
     def test_shooter_kills_player_in_front(self):
         self.level.update_level([], 1)
-        self.assertFalse(self.player.is_active)
+        self.assertNotIn(self.player, self.level.sprites)
 
 
     def test_shooter_kills_rover_in_front(self):
         self.player.pos = (2, 0)
         rover = self.level.add_sprite('Rover', (1, 0))
         self.level.update_level([], 1)
-        self.assertFalse(rover.is_active)
+        self.assertNotIn(rover, self.level.sprites)
 
 
     def test_shooter_kills_player_farther_in_front(self):
         self.player.pos = (2, 0)
         self.level.update_level([], 1)
-        self.assertFalse(self.player.is_active)
+        self.assertNotIn(self.player, self.level.sprites)
 
 
     def test_shooter_doesnt_kill_player_beside(self):
         self.player.pos = (0, 1)
         self.level.update_level([], 1)
-        self.assertTrue(self.player.is_active)
+        self.assertIn(self.player, self.level.sprites)
 
 
     def test_shooter_doesnt_kill_player_behind_wall(self):
         self.player.pos = (4, 0)
         self.level.update_level([], 1)
-        self.assertTrue(self.player.is_active)
+        self.assertIn(self.player, self.level.sprites)
 
 
     def test_shooter_doesnt_kill_player_behind_crate(self):
         self.player.pos = (2, 0)
         self.level.add_sprite('Crate', (1, 0))
         self.level.update_level([], 1)
-        self.assertTrue(self.player.is_active)
+        self.assertIn(self.player, self.level.sprites)

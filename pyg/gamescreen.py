@@ -76,7 +76,7 @@ class GameScreen(Screen):
 
         # sort sprites by layer
         layers = {}
-        for sprite in self.level.sprites.active:
+        for sprite in self.level.sprites:
             layers.setdefault(self.renderer.get_layer(sprite), set()).add(sprite)
 
         # blit each layer of sprites onto the view

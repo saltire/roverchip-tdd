@@ -39,13 +39,13 @@ class Level:
                 player.handle_action(*action)
 
         # call sprite hooks
-        for sprite in self.sprites.active.by_priority():
+        for sprite in self.sprites.by_priority():
             sprite.start_turn()
             if sprite.to_move:
                 sprite.do_move(elapsed)
                 if sprite.get_cell():
                     sprite.after_move()
-        for sprite in self.sprites.active:
+        for sprite in self.sprites.by_priority():
             sprite.end_turn()
 
 

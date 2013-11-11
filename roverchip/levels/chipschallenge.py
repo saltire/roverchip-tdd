@@ -10,13 +10,13 @@ class ChipsChallenge(Level):
 
 
     def check_for_success(self):
-        """Return true if player is in an exit cell and carrying enough
+        """Return true if a player is in an exit cell and carrying enough
         chips to meet the level quota."""
-        player = self.sprites['Player'].pop()
-        return (player.get_cell_type() == 'Exit' and
-                len(player.carrying['Chip']) >= self.chipquota)
+        return any((player.get_cell_type() == 'Exit' and
+                    len(player.carrying['Chip']) >= self.chipquota)
+                   for player in self.sprites['Player'])
 
 
     def check_for_failure(self):
-        """Return true if the player is not active, i.e. dead."""
-        return not self.sprites['Player'].pop().is_active
+        """Return true if no players are alive in the level."""
+        return not self.sprites['Player']

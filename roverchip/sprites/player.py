@@ -1,5 +1,4 @@
 from roverchip.sprite import Sprite
-from roverchip.spritegroup import SpriteGroup
 
 
 class Player(Sprite):
@@ -10,10 +9,10 @@ class Player(Sprite):
     def __init__(self, level, (x, y)):
         Sprite.__init__(self, level, (x, y))
 
-        self.carrying = SpriteGroup()       # sprites carried by the player
-        self.followers = SpriteGroup()      # sprites following the player
-        self.pushing = SpriteGroup()        # sprites being pushed
-        self.move_key_queue = []            # current move key being pressed
+        self.carrying = self.level.sprites.subset()     # sprites carried by the player
+        self.followers = self.level.sprites.subset()    # sprites following the player
+        self.pushing = self.level.sprites.subset()      # sprites being pushed
+        self.move_key_queue = []                        # current move key being pressed
 
 
     def handle_action(self, etype, *args):
@@ -38,7 +37,7 @@ class Player(Sprite):
         """Kill the player if it's touching any enemies.
         Start the player moving if stopped and key is down."""
         if self.level.sprites.enemy.on(self.pos):
-            self.is_active = False
+            self.destroy()
             return
 
         if (self.move_key_queue and not self.to_move and not self.delay_left):
@@ -87,7 +86,7 @@ class Player(Sprite):
             item.after_move()
         self.pushing.clear()
 
-        for item in self.level.sprites.active.item.on(self.pos):
+        for item in self.level.sprites.item.on(self.pos):
             if item not in self.carrying:
                 self.carrying.add(item)
 
@@ -102,4 +101,4 @@ class Player(Sprite):
     def end_turn(self):
         """Kill the player if it is overlapping any enemies."""
         if self.level.sprites.enemy.on(self.pos):
-            self.is_active = False
+            self.destroy()

@@ -10,9 +10,9 @@ class KeyDoor(Door, Sprite):
 
 
     def attempt_open(self, player):
-        for key in player.carrying['Key'].active:
+        for key in player.carrying['Key']:
             if key.colour == self.colour:
                 self.is_solid = False
-                key.is_active = False
+                key.destroy()
                 player.carrying.remove(key)
                 break

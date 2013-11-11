@@ -9,4 +9,4 @@ class Rover(Sprite):
     def end_turn(self):
         """Kill Rover if he is overlapping any enemies."""
         if self.level.sprites.enemy.on(self.pos):
-            self.is_active = False
+            self.destroy()
