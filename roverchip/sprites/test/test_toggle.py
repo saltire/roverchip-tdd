@@ -19,5 +19,5 @@ class Test_Toggle(unittest.TestCase):
 
         player = self.level.add_sprite('Player', (0, 0))
         player.attempt_move(1)
-        self.level.update_level([], 1000 / player.speed)
+        self.level.update_level(1000 / player.speed)
         self.assertFalse(self.toggle.is_solid)

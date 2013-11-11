@@ -32,7 +32,7 @@ class Test_Player(unittest.TestCase):
 
 
     def test_player_moves_pushed_objects(self):
-        self.level.update_level([('move', 1)], self.celltime)
+        self.level.update_level(self.celltime, [('move', 1)])
         self.assertEqual(self.crate.pos, (2, 1))
 
 
@@ -50,7 +50,7 @@ class Test_Player(unittest.TestCase):
 
     def test_player_doesnt_push_without_passable_cell_behind_on_key_event(self):
         self.level.add_sprite('Crate', (0, 0))
-        self.level.update_level([('move', 0)], self.celltime)
+        self.level.update_level(self.celltime, [('move', 0)])
         self.assertEqual(self.player.pos, (0, 1))
 
 
@@ -69,7 +69,7 @@ class Test_Player(unittest.TestCase):
     def test_player_picks_up_items_when_arriving_in_their_cell(self):
         key = self.level.add_sprite('Key', (0, 2))
         self.player.attempt_move(2)
-        self.level.update_level([], self.celltime)
+        self.level.update_level(self.celltime)
         self.assertIn(key, self.player.carrying)
 
 
@@ -77,7 +77,7 @@ class Test_Player(unittest.TestCase):
         key = self.level.add_sprite('Key', (0, 1))
         self.player.carrying.add(key)
         self.player.attempt_move(2)
-        self.level.update_level([], self.celltime)
+        self.level.update_level(self.celltime)
         self.assertEqual(key.pos, (0, 2))
 
 
@@ -88,31 +88,31 @@ class Test_Player(unittest.TestCase):
 
 
     def test_player_moves_after_move_event(self):
-        self.level.update_level([('move', 2)], self.celltime)
+        self.level.update_level(self.celltime, [('move', 2)])
         self.assertEqual(self.player.pos, (0, 2))
 
 
     def test_player_keeps_moving_until_key_released(self):
-        self.level.update_level([('move', 2)], self.celltime)
-        self.level.update_level([], self.celltime)
+        self.level.update_level(self.celltime, [('move', 2)])
+        self.level.update_level(self.celltime)
         self.assertEqual(self.player.pos, (0, 3))
 
 
     def test_player_stops_moving_when_key_released(self):
-        self.level.update_level([('move', 2)], self.celltime)
-        self.level.update_level([], self.celltime)
-        self.level.update_level([('move', 2, False)], self.celltime)
+        self.level.update_level(self.celltime, [('move', 2)])
+        self.level.update_level(self.celltime)
+        self.level.update_level(self.celltime, [('move', 2, False)])
         self.assertEqual(self.player.pos, (0, 3))
 
 
     def test_player_keeps_moving_in_1st_direction_when_2nd_key_pressed(self):
-        self.level.update_level([('move', 2)], self.celltime)
-        self.level.update_level([('move', 1)], self.celltime)
+        self.level.update_level(self.celltime, [('move', 2)])
+        self.level.update_level(self.celltime, [('move', 1)])
         self.assertEqual(self.player.pos, (0, 3))
 
 
     def test_player_starts_moving_in_2nd_direction_when_1st_key_released(self):
-        self.level.update_level([('move', 2)], self.celltime)
-        self.level.update_level([('move', 1)], self.celltime)
-        self.level.update_level([('move', 2, False)], self.celltime)
+        self.level.update_level(self.celltime, [('move', 2)])
+        self.level.update_level(self.celltime, [('move', 1)])
+        self.level.update_level(self.celltime, [('move', 2, False)])
         self.assertEqual(self.player.pos, (1, 3))

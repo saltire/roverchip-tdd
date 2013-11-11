@@ -19,7 +19,7 @@ class Test_Rover(unittest.TestCase):
 
     def test_rover_follows_player_after_player_moves_adjacent(self):
         self.player.start_move(1)
-        self.level.update_level([], self.celltime)
+        self.level.update_level(self.celltime)
         self.assertIn(self.rover, self.player.followers)
 
 
@@ -27,5 +27,5 @@ class Test_Rover(unittest.TestCase):
         self.player.pos = 1, 0
         self.player.followers.add(self.rover)
         self.player.start_move(3)
-        self.level.update_level([], self.celltime)
+        self.level.update_level(self.celltime)
         self.assertEqual(self.rover.rotate, 3)

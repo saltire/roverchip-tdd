@@ -31,7 +31,7 @@ class Level:
         return spr
 
 
-    def update_level(self, actions, elapsed):
+    def update_level(self, elapsed=0, actions=[]):
         """Handle action commands and move sprites."""
         for player in self.sprites['Player']:
             # this assumes there is only one player for now

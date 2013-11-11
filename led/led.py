@@ -70,7 +70,7 @@ class LED:
                 elif event.type == pygame.KEYUP:
                     keys.append((event.key, False))
 
-            events = []
+            actions = []
             for key, keydown in keys:
                 # skip level
                 if keydown and key == pygame.K_RETURN:
@@ -78,9 +78,9 @@ class LED:
 
                 # move event
                 if key in self.move_keys:
-                    events.append(('move', self.move_keys.index(key), keydown))
+                    actions.append(('move', self.move_keys.index(key), keydown))
 
-            level.update_level(events, elapsed)
+            level.update_level(elapsed, actions)
 
             if level.check_for_failure():
                 return False

@@ -111,4 +111,4 @@ class GameScreen(Screen):
                 actions.append(('move', self.movekeys.index(event.key),
                                 event.type == pygame.KEYDOWN))
 
-        self.level.update_level(actions, elapsed)
+        self.level.update_level(elapsed, actions)

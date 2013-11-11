@@ -22,15 +22,15 @@ class Test_Player(unittest.TestCase):
 
     def test_sentry_turns_when_button_triggered(self):
         self.player.attempt_move(1)
-        self.level.update_level([], self.playertime)
+        self.level.update_level(self.playertime)
         self.assertEqual(self.sentry.rotate, 1)
 
 
     def test_sentry_moves_forward_when_possible(self):
         self.sentry.rotate = 1
-        self.level.update_level([], self.sentrytime)
+        self.level.update_level(self.sentrytime)
         self.assertEqual(self.sentry.pos, (1, 0))
-        self.level.update_level([], self.sentrytime)
+        self.level.update_level(self.sentrytime)
         self.assertEqual(self.sentry.pos, (2, 0))
-        self.level.update_level([], self.sentrytime)
+        self.level.update_level(self.sentrytime)
         self.assertEqual(self.sentry.pos, (2, 0)) # stopped by wall
